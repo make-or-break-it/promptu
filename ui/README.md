@@ -1,3 +1,17 @@
+# Promptu - UI
+
+This directory contains the source code for the Promptu UI, which is written using [Svelte](#svelte--vite).
+
+## Contributing
+
+To see a preview of the site, first run `npm install .` in the root of this directory, then run `npm run dev`.
+
+The recommended IDE setup is VS Code and you will need to install the following extensions:
+
+* [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode)
+* [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+* [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare)
+
 # Svelte + Vite
 
 This template should help get you started developing with Svelte in Vite.

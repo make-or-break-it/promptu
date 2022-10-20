@@ -1,6 +1,6 @@
 # API
 
-The API is written in GO.
+The API is written in Golang.
 
 ## Run
 

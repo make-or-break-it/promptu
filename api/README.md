@@ -6,6 +6,18 @@ The API is written in Golang.
 
 ```go run cmd/main.go```
 
+### Running using docker
+
+Build container image:
+```
+docker build -t promptu-api .
+```
+
+Run container:
+```
+docker run -p 8080:8080 promptu-api
+```
+
 ## Supported endpoints
 
 Post with:

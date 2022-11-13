@@ -38,7 +38,7 @@ func run(ctx context.Context, store handler.Store) error {
 
 	log.Print("Starting the server on port 8080")
 	srv := &http.Server{
-		Addr:         "localhost:8080",
+		Addr:         "0.0.0.0:8080",
 		WriteTimeout: time.Second * 15,
 		ReadTimeout:  time.Second * 15,
 		IdleTimeout:  time.Second * 60,

@@ -1,13 +1,40 @@
 <script>
-  let prompt = "Living or dead, who would you spend 3 hours with and why?";
+  import { username } from "../stores/username";
+  import { posted } from "../stores/postManager";
+
+  const postEndpoint = 'http://localhost:8080/post'
+  const prompt = "Living or dead, who would you spend 3 hours with and why?";
+
+  let answer = "";
+
+  async function handleSubmit(e) {
+    if (username && answer) {
+      let response = await fetch(postEndpoint, {
+        method: 'POST',
+        body: JSON.stringify({
+          'user': $username,
+          'message': answer
+        }),
+         headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+
+      let ok = await response.ok
+
+      if (ok) {
+        $posted = true
+      }
+    }
+  }
 </script>
 
 <div>
   <p class="message">It's time to post! Today's prompt is:</p>
   <p class="prompt">{prompt}</p>
 
-  <form>
-    <input type="text" placeholder="Answer" />
+  <form on:submit|preventDefault={handleSubmit}>
+    <input type="text" bind:value={answer} placeholder="Answer" />
     <input type="submit" value="Post!" />
   </form>
 </div>

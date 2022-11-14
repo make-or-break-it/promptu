@@ -65,15 +65,17 @@ func createRouter(store handler.Store) *mux.Router {
 	hndlr := handler.NewHandler(store)
 
 	r := mux.NewRouter()
-	r.HandleFunc("/feed", hndlr.GetFeed).Methods(http.MethodGet)
-	r.HandleFunc("/post", hndlr.PostMessage).Methods(http.MethodPost)
+	r.HandleFunc("/feed", hndlr.GetFeed).Methods(http.MethodGet, http.MethodOptions)
+	r.HandleFunc("/post", hndlr.PostMessage).Methods(http.MethodPost, http.MethodOptions)
 
 	return r
 }
 
 func middleware(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-type", "application/json")
+		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		h.ServeHTTP(w, r)
 	})
 }

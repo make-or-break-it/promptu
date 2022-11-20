@@ -1,0 +1,19 @@
+name: test-api
+
+on:
+  pull_request:
+    branches:
+    - main
+    - 'release/**'
+    - 'cicd/**'
+    - dev
+    paths:
+      - api/**
+      - .github/**
+
+jobs:
+  test-api:
+    name: Test API
+    uses: ./.github/workflows/reusable-test-go.yaml
+    with:
+      component: api

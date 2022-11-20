@@ -1,4 +1,4 @@
-app = "postgres-db"
+app = "promptu-db"
 
 kill_signal = "SIGTERM"
 kill_timeout = 300

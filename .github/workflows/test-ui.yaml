@@ -1,0 +1,20 @@
+name: test-ui
+
+on:
+  pull_request:
+    branches:
+    - main
+    - 'release/**'
+    - 'cicd/**'
+    - dev
+    paths:
+      - ui/**
+      - .github/**
+
+
+jobs:
+  test-ui:
+    name: Test UI
+    uses: ./.github/workflows/reusable-test-node.yaml
+    with:
+      component: ui

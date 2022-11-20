@@ -3,7 +3,7 @@ resource "fly_app" "promptu" {
   org = "promptu"
 }
 
-resource "fly_app" "promptu-api" {
-  name = "promptu-api"
+resource "fly_app" "promptu_api" {
+  name = "promptu_api"
   org = "promptu"
 }

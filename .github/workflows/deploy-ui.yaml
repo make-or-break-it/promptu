@@ -1,0 +1,24 @@
+name: deploy-ui
+
+on:
+  push:
+    paths:
+      - ui/**
+      - .github/**
+    branches:
+    - main
+
+jobs:
+  test-ui:
+    name: Test UI
+    uses: ./.github/workflows/reusable-test-node.yaml
+    with:
+      component: ui
+  deploy-ui:
+    name: Deploy UI
+    uses: ./.github/workflows/reusable-deploy.yaml
+    with:
+      component: ui
+    secrets:
+      fly-api-token: ${{ secrets.FLY_API_TOKEN }}
+    needs: [ test-ui ]

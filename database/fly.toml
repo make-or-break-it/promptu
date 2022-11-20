@@ -5,7 +5,7 @@ kill_timeout = 300
 services = []
 
 [build]
-  image = "flyio/postgres-ha:latest
+  image = "flyio/postgres-ha:latest"
 
 [checks]
   [checks.pg]

@@ -2,10 +2,11 @@ name: reusable-test-node
 
 on:
   workflow_call:
-    component:
-      description: "The component to test. Must match the name of a directory in the root of the repo."
-      required: true
-      type: string
+    inputs:
+      component:
+        description: "The component to test. Must match the name of a directory in the root of the repo."
+        required: true
+        type: string
 
 jobs:
   test-frontboi:

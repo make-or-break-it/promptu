@@ -16,5 +16,6 @@ RUN go mod download && \
 FROM base as run
 
 COPY --from=build /build/server /build/
+EXPOSE 8080
 
 ENTRYPOINT [ "/build/server" ]

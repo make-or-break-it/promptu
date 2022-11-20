@@ -5,7 +5,7 @@ resource "fly_app" "promptu_db" {
 
 resource "fly_volume" "promptu_db_volume" {
   name   = "promptu_db_volume"
-  app    = "promptu_db"
+  app    = fly_app.promptu_db.name
   size   = 10
   region = "cdg"
 }

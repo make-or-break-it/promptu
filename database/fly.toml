@@ -51,4 +51,4 @@ services = []
 
 [[mounts]]
   destination = "/data"
-  source = "pg_data"
+  source = "promptu_db_volume"

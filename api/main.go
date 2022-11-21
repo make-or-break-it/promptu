@@ -21,7 +21,7 @@ import (
 func main() {
 	app := &cli.App{
 		Action: func(c *cli.Context) error {
-			store := storage.NewMongoDbStore("promptu")
+			store := storage.NewMongoDbStore("promptu-db")
 			return run(context.Background(), store)
 		},
 	}

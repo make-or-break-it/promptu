@@ -6,5 +6,5 @@ resource "mongodbatlas_cluster" "promptu-db" {
   backing_provider_name       = "AWS"
   provider_instance_size_name = "M0" # smallest free tier DB
 
-  provider_region_name = "EU_WEST_2"
+  provider_region_name = "EU_WEST_1"
 }

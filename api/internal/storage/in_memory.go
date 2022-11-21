@@ -19,6 +19,6 @@ func (s *InMemoryStore) GetFeed(ctx context.Context) (model.Feed, error) {
 }
 
 func (s *InMemoryStore) PostMessage(ctx context.Context, post model.Post, createdAt time.Time) error {
-	s.feed.Posts = append(s.feed.Posts, model.Post{User: post.User, Message: post.Message})
+	s.feed.Posts = append(s.feed.Posts, model.Post{User: post.User, Message: post.Message, CreatedAt: createdAt})
 	return nil
 }

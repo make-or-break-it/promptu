@@ -76,7 +76,7 @@ func (s *PromptuMongoClient) PostMessage(ctx context.Context, post model.Post, c
 	dbCtx, dbCancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer dbCancel()
 
-	_, err := col.InsertOne(dbCtx, model.Post{User: post.User, Message: post.Message})
+	_, err := col.InsertOne(dbCtx, model.Post{User: post.User, Message: post.Message, CreatedAt: createdAt})
 
 	if err != nil {
 		return err

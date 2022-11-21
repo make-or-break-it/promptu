@@ -66,12 +66,12 @@ func getAddress() string {
 	var exists bool
 
 	host, exists = os.LookupEnv("HOST")
-	if !exists { // localhost
+	if !exists {
 		host = "localhost"
 	}
 
 	port, exists = os.LookupEnv("PORT")
-	if !exists { // 8080
+	if !exists {
 		port = "8080"
 	}
 	return host + ":" + port

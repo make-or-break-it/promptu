@@ -1,7 +1,11 @@
+locals {
+  promptu_mongodb_name = "promptu-db"
+}
+
 resource "mongodbatlas_cluster" "promptu-db" {
   project_id    = var.promptu_mongo_db_project_id
 
-  name          = "promptu-db"
+  name          = local.promptu_mongodb_name
 
   provider_name               = "TENANT"
   backing_provider_name       = "AWS"
@@ -16,9 +20,11 @@ resource "mongodbatlas_database_user" "prompt" {
   username = "promptu"
   password = "thispasswordisnotreal" # can be changed without affecting the resource
 
+  auth_database_name = local.promptu_mongodb_name
+
   roles {
    role_name     = "readWrite"
-   database_name = mongodbatlas_cluster.promptu-db.cluster_id
+   database_name = local.promptu_mongodb_name
   }
 }
 

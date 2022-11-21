@@ -18,6 +18,12 @@ Run container:
 docker run -p 8080:8080 promptu-api
 ```
 
+To interact with the api from your host, you need to set these environment variables (you can create a `api/.env` file with them).
+```
+HOST=0.0.0.0
+PORT=8080
+```
+
 ## Supported endpoints
 
 Post with:

@@ -15,13 +15,13 @@ Before we can run anything for Promptu, the following had to be manually made:
 * [Manually generated fly.toml](https://fly.io/docs/reference/configuration/) for each application - these will be used to inform Fly how to deploy our applications (this would normally be automatically generated with `fly launch`, but we're using Terraform to create our app instead, so we have to default to manual TOML file generation)
 * The infrastructure needs to be created first before the Github workflow/deployments can run
 * Run the Terraform apply
-* [Add secrets](https://github.com/fly-apps/postgres-ha#set-secrets) to the pg app
+* Recreate the password main app user for MongoDB and set the fly.io application secret with the new password
 
 ## Application runtime
 
 ## Databases
 
-TBD - setup instructions [here](https://github.com/fly-apps/postgres-ha)
+Using MongoDB because it's easier to set up with Terraform and has a more mature provider.
 
 ## Infrastructure as Code
 

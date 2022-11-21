@@ -5,6 +5,7 @@ type Feed struct {
 }
 
 type Post struct {
-	User    string `json:"user"`
-	Message string `json:"message"`
+	User      string `json:"user"`
+	Message   string `json:"message"`
+	CreatedAt string `json:"createdAt"`
 }

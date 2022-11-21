@@ -10,7 +10,10 @@ resource "mongodbatlas_cluster" "promptu-db" {
   provider_name               = "TENANT"
   backing_provider_name       = "AWS"
   provider_instance_size_name = "M0" # free tier DB
-  minimum_enabled_tls_protocol = "TLS1_2"
+
+  advanced_configuration {
+    minimum_enabled_tls_protocol = "TLS1_2" 
+  }
 
   provider_region_name = "EU_WEST_1"
 }

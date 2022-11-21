@@ -17,8 +17,8 @@ resource "mongodbatlas_database_user" "prompt" {
   password = "thispasswordisnotreal" # can be changed without affecting the resource
 
   roles {
-   role_name = "readWriteAnyDatabase"
-   database_name = "admin"
+   role_name     = "readWrite"
+   database_name = mongodbatlas_cluster.promptu-db.cluster_id
   }
 }
 

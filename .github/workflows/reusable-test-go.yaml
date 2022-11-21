@@ -1,0 +1,29 @@
+
+name: reusable-test-go
+
+on:
+  workflow_call:
+    inputs:
+      component:
+        description: "The component to test. Must match the name of a directory in the root of the repo."
+        required: true
+        type: string
+  
+jobs:
+  test-go:
+    name: Test Golang app
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.component }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.18
+      - name: Test codebase
+        run: go test -v ./...
+      - name: Check codebase builds successfully
+        run: go build -v ./...

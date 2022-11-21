@@ -22,6 +22,10 @@ func NewHandler(store Store) *Handler {
 	return &Handler{store}
 }
 
+func (h *Handler) Health(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+}
+
 func (h *Handler) GetFeed(w http.ResponseWriter, r *http.Request) {
 	feed, err := h.store.GetFeed(context.Background())
 

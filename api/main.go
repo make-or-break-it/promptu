@@ -83,6 +83,7 @@ func createRouter(store handler.Store) *mux.Router {
 	r := mux.NewRouter()
 	r.HandleFunc("/feed", hndlr.GetFeed).Methods(http.MethodGet, http.MethodOptions)
 	r.HandleFunc("/post", hndlr.PostMessage).Methods(http.MethodPost, http.MethodOptions)
+	r.HandleFunc("/health", hndlr.Health).Methods(http.MethodGet, http.MethodOptions)
 
 	return r
 }

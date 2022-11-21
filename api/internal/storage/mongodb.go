@@ -19,10 +19,11 @@ type PromptuMongoClient struct {
 
 func NewMongoDbStore(dbName string) *PromptuMongoClient {
 	cfg := config.AppConfig()
+
 	// Read more here: https://www.mongodb.com/docs/drivers/go/current/fundamentals/connection/#std-label-golang-connection-guide
 	clientOptions := options.
 		Client().
-		ApplyURI(fmt.Sprintf("%s?%s", cfg.MongoDbUrl, cfg.MongoDbConnParams))
+		ApplyURI(fmt.Sprintf("%s/?%s", cfg.MongoDbUrl, cfg.MongoDbConnParams))
 
 	connectCtx, connectCancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer connectCancel()

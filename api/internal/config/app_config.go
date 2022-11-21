@@ -15,7 +15,7 @@ func AppConfig() *appConfig {
 	if globalAppConfig == nil {
 		cfg := &appConfig{}
 
-		if err := env.Parse(&cfg); err != nil {
+		if err := env.Parse(cfg); err != nil {
 			panic(err)
 		}
 

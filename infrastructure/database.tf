@@ -21,3 +21,10 @@ resource "mongodbatlas_database_user" "prompt" {
    database_name = "admin"
   }
 }
+
+resource "mongodbatlas_project_ip_access_list" "promptu-api" {
+  project_id    = var.promptu_mongo_db_project_id
+
+  ip_address = "137.66.12.143"
+  comment    = "IP address for fly.io app ${fly_app.promptu-api.id}"
+}

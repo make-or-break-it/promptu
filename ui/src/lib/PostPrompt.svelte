@@ -2,7 +2,9 @@
   import { username } from "../stores/username";
   import { posted } from "../stores/postManager";
 
-  const postEndpoint = 'http://localhost:8080/post'
+  const env = import.meta.env
+
+  const postEndpoint = `${env.PUBLIC_PROMPTU_API_HOST}/post`
   const prompt = "Living or dead, who would you spend 3 hours with and why?";
 
   let answer = "";

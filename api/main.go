@@ -38,7 +38,7 @@ func run(ctx context.Context, store handler.Store) error {
 
 	log.Print("Starting the server on port 8080")
 	srv := &http.Server{
-		Addr:         "localhost:8080",
+		Addr:         getAddress(),
 		WriteTimeout: time.Second * 15,
 		ReadTimeout:  time.Second * 15,
 		IdleTimeout:  time.Second * 60,
@@ -59,6 +59,22 @@ func run(ctx context.Context, store handler.Store) error {
 	case err := <-errCh:
 		return err
 	}
+}
+
+func getAddress() string {
+	var host, port string
+	var exists bool
+
+	host, exists = os.LookupEnv("HOST")
+	if !exists {
+		host = "localhost"
+	}
+
+	port, exists = os.LookupEnv("PORT")
+	if !exists {
+		port = "8080"
+	}
+	return host + ":" + port
 }
 
 func createRouter(store handler.Store) *mux.Router {

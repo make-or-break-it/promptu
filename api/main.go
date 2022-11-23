@@ -67,7 +67,7 @@ func getAddress() string {
 
 	host, exists = os.LookupEnv("HOST")
 	if !exists {
-		host = "localhost"
+		host = "0.0.0.0"
 	}
 
 	port, exists = os.LookupEnv("PORT")

@@ -20,11 +20,16 @@ resource "mongodbatlas_database_user" "prompt" {
   username = "promptu"
   password = "thispasswordisnotreal" # can be changed without affecting the resource
 
-  auth_database_name = local.promptu_mongodb_name
+  auth_database_name = "admin"
 
   roles {
    role_name     = "readWrite"
    database_name = local.promptu_mongodb_name
+  }
+
+  scopes {
+    name = local.promptu_mongodb_name
+    type = "CLUSTER"
   }
 }
 

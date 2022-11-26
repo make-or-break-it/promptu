@@ -16,4 +16,4 @@ jobs:
     name: Test API
     uses: ./.github/workflows/reusable-test-go.yaml
     with:
-      component: api
+      component: apps/api

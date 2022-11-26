@@ -13,12 +13,12 @@ jobs:
     name: Test API
     uses: ./.github/workflows/reusable-test-go.yaml
     with:
-      component: api
+      component: apps/api
   deploy-api:
     name: Deploy API
     uses: ./.github/workflows/reusable-deploy.yaml
     with:
-      component: api
+      component: apps/api
     secrets:
       fly-api-token: ${{ secrets.FLY_API_TOKEN }}
     needs: [ test-api ]

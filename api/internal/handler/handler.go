@@ -7,18 +7,14 @@ import (
 	"time"
 
 	"promptu/api/internal/model"
+	"promptu/api/internal/storage"
 )
 
 type Handler struct {
-	store Store
+	store storage.Store
 }
 
-type Store interface {
-	GetFeed(ctx context.Context) (model.Feed, error)
-	PostMessage(ctx context.Context, post model.Post, createdAt time.Time) error
-}
-
-func NewHandler(store Store) *Handler {
+func NewHandler(store storage.Store) *Handler {
 	return &Handler{store}
 }
 

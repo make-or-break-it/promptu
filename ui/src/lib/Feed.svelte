@@ -1,5 +1,7 @@
 <script>
-  const feedEndpoint = 'http://localhost:8080/feed'
+  const env = import.meta.env
+
+  const feedEndpoint = `${env.PUBLIC_PROMPTU_API_HOST}/feed`
 
   const getFeed = (async () => {
     let response = await fetch(feedEndpoint)

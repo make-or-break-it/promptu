@@ -1,16 +1,16 @@
 package storage
 
-import (	
+import (
 	"context"
-	"time"
 	"promptu/api/internal/model"
+	"time"
 )
 
 type InMemoryStore struct {
 	feed model.Feed
 }
 
-func NewInMemoryStore() *InMemoryStore {
+func NewInMemoryStore() Store {
 	return &InMemoryStore{feed: model.Feed{}}
 }
 
@@ -19,6 +19,6 @@ func (s *InMemoryStore) GetFeed(ctx context.Context) (model.Feed, error) {
 }
 
 func (s *InMemoryStore) PostMessage(ctx context.Context, post model.Post, createdAt time.Time) error {
-	s.feed.Posts = append(s.feed.Posts, model.Post{User: post.User, Message: post.Message})
-	return nil 
+	s.feed.Posts = append(s.feed.Posts, model.Post{User: post.User, Message: post.Message, CreatedAt: createdAt})
+	return nil
 }

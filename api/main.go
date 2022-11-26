@@ -21,7 +21,7 @@ import (
 func main() {
 	app := &cli.App{
 		Action: func(c *cli.Context) error {
-			store := storage.NewInMemoryStore()
+			store := storage.NewMongoDbStore("promptu")
 			return run(context.Background(), store)
 		},
 	}
@@ -31,7 +31,7 @@ func main() {
 	}
 }
 
-func run(ctx context.Context, store handler.Store) error {
+func run(ctx context.Context, store storage.Store) error {
 
 	r := createRouter(store)
 	errCh := make(chan error, 1)
@@ -77,7 +77,7 @@ func getAddress() string {
 	return host + ":" + port
 }
 
-func createRouter(store handler.Store) *mux.Router {
+func createRouter(store storage.Store) *mux.Router {
 	hndlr := handler.NewHandler(store)
 
 	r := mux.NewRouter()

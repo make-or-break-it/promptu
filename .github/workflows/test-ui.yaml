@@ -17,4 +17,4 @@ jobs:
     name: Test UI
     uses: ./.github/workflows/reusable-test-node.yaml
     with:
-      component: ui
+      component: apps/ui

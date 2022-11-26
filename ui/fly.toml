@@ -3,12 +3,13 @@ kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
 
-[env]
-  PUBLIC_PROMPTU_API_HOST="https://promptu-api.fly.dev"
-
 [experimental]
   allowed_public_ports = []
   auto_rollback = true
+
+[build]
+  [build.args]
+    PUBLIC_PROMPTU_API_HOST="https://promptu-api.fly.dev"
 
 [[services]]
   http_checks = []

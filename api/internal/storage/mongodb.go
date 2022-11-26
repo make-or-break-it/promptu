@@ -47,7 +47,7 @@ func NewMongoDbStore(dbName string) *PromptuMongoClient {
 	}
 }
 
-func (s *PromptuMongoClient) GetFeed(ctx context.Context) (model.Feed, error) {
+func (s *PromptuMongoClient) GetFeed(ctx context.Context) ([]model.Post, error) {
 	col := s.MongoClient.Database(s.DatabaseName).Collection("posts")
 
 	dbCtx, dbCancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -59,7 +59,7 @@ func (s *PromptuMongoClient) GetFeed(ctx context.Context) (model.Feed, error) {
 		panic(err)
 	}
 
-	var feed model.Feed
+	var feed []model.Post
 
 	resultCtx, resultCancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer resultCancel()

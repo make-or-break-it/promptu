@@ -7,18 +7,18 @@ import (
 )
 
 type InMemoryStore struct {
-	feed model.Feed
+	feed []model.Post
 }
 
 func NewInMemoryStore() Store {
-	return &InMemoryStore{feed: model.Feed{}}
+	return &InMemoryStore{feed: []model.Post{}}
 }
 
-func (s *InMemoryStore) GetFeed(ctx context.Context) (model.Feed, error) {
+func (s *InMemoryStore) GetFeed(ctx context.Context) ([]model.Post, error) {
 	return s.feed, nil
 }
 
 func (s *InMemoryStore) PostMessage(ctx context.Context, post model.Post, createdAt time.Time) error {
-	s.feed.Posts = append(s.feed.Posts, model.Post{User: post.User, Message: post.Message, CreatedAt: createdAt})
+	s.feed = append(s.feed, model.Post{User: post.User, Message: post.Message, CreatedAt: createdAt})
 	return nil
 }

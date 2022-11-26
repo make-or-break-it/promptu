@@ -7,6 +7,6 @@ import (
 )
 
 type Store interface {
-	GetFeed(ctx context.Context) (model.Feed, error)
+	GetFeed(ctx context.Context) ([]model.Post, error)
 	PostMessage(ctx context.Context, post model.Post, createdAt time.Time) error
 }

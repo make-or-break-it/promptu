@@ -28,7 +28,7 @@ PORT=8080
 
 Post with:
 ```
-curl -i -XPOST  -H "Content-Type: application/json" -d '{"user":"some_user","message":"hey there. i feel great!"}' http://localhost:8080/post
+curl -i -XPOST  -H "Content-Type: application/json" -d '{"user":"some_user","message":"Test message from localhost"}' http://localhost:8080/post
 ```
 
 Get feed with:

@@ -7,11 +7,6 @@ variable "promptu_mongodb_org_id" {
     description = "The MongoDB org ID that Promptu will be hosted in"
 }
 
-variable "promptu_mongo_db_project_id" {
-    type = string
-    description = "The MongoDB project ID for Promptu"
-}
-
 variable "promptu_fake_mongodb_init_password" {
     type = string
     description = <<EOF

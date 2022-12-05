@@ -1,5 +1,16 @@
+resource "mongodbatlas_project" "promptu" {
+  name = "promptu"
+  org_id = var.promptu_mongodb_org_id
+  
+  lifecycle {
+    ignore_changes = [
+      api_keys,
+    ]
+  }
+}
+
 resource "mongodbatlas_cluster" "promptu-db" {
-  project_id    = var.promptu_mongo_db_project_id
+  project_id    = mongodbatlas_project.promptu.id
 
   name          = local.promptu_mongodb_name
 
@@ -11,7 +22,7 @@ resource "mongodbatlas_cluster" "promptu-db" {
 }
 
 resource "mongodbatlas_database_user" "promptu" {
-  project_id    = var.promptu_mongo_db_project_id
+  project_id    = mongodbatlas_project.promptu.id
 
   # In order to create a DB, we have to set a fictional first time password then create
   # a real password in the MongoDB Atlas UI. Updating the password in the UI will not
@@ -33,7 +44,7 @@ resource "mongodbatlas_database_user" "promptu" {
 }
 
 resource "mongodbatlas_project_ip_access_list" "promptu-api" {
-  project_id    = var.promptu_mongo_db_project_id
+  project_id    = mongodbatlas_project.promptu.id
 
   ip_address = "137.66.12.143"
   comment    = "IP address for fly.io app ${fly_app.promptu-api.id}"

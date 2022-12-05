@@ -17,8 +17,11 @@ resource "mongodbatlas_cluster" "promptu-db" {
 resource "mongodbatlas_database_user" "promptu" {
   project_id    = var.promptu_mongo_db_project_id
 
+  # In order to create a DB, we have to set a fictional first time password then create
+  # a real password in the MongoDB Atlas UI. Updating the password in the UI will not
+  # cause configuration drift. 
+  password = var.promptu_fake_mongodb_init_password
   username = "promptu"
-  password = "thispasswordisnotreal" # can be changed without affecting the resource
 
   auth_database_name = "admin"
 

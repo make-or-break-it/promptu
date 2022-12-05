@@ -1,7 +1,3 @@
-locals {
-  promptu_mongodb_name = "promptu-db"
-}
-
 resource "mongodbatlas_cluster" "promptu-db" {
   project_id    = var.promptu_mongo_db_project_id
 

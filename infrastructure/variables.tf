@@ -7,6 +7,11 @@ variable "promptu_mongodb_org_id" {
     description = "The MongoDB org ID that Promptu will be hosted in"
 }
 
+variable "promptu_public_api_ip_range" {
+    type = string
+    description = "The public IP range assumed by the Promptu API"
+}
+
 variable "promptu_fake_mongodb_init_password" {
     type = string
     description = <<EOF

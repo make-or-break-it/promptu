@@ -46,6 +46,6 @@ resource "mongodbatlas_database_user" "promptu" {
 resource "mongodbatlas_project_ip_access_list" "promptu-api" {
   project_id    = mongodbatlas_project.promptu.id
 
-  ip_address = "137.66.12.143"
+  ip_address = var.promptu_public_api_ip_range
   comment    = "IP address for fly.io app ${fly_app.promptu-api.id}"
 }

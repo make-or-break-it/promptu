@@ -41,6 +41,12 @@ resource "mongodbatlas_database_user" "promptu" {
     name = local.promptu_mongodb_name
     type = "CLUSTER"
   }
+
+  lifecycle {
+    ignore_changes = [
+      password,
+    ]
+  }
 }
 
 resource "mongodbatlas_project_ip_access_list" "promptu-api" {

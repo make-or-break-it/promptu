@@ -7,7 +7,7 @@ variable "promptu_mongodb_org_id" {
     description = "The MongoDB org ID that Promptu will be hosted in"
 }
 
-variable "promptu_fake_mongodb_init_password" {
+variable "promptu_mongodb_fake_init_password" {
     type = string
     description = <<EOF
 (Source from environment variable only) The initial password used to 

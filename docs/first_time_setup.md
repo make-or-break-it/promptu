@@ -23,7 +23,7 @@ If you've forked Promptu and want to get its end-to-end workflow running, here's
         * (**Sensitive**, Environment Variable) `MONGODB_ATLAS_PUBLIC_KEY` (value secured from step `1.b.`)
         * (**Sensitive**, Environment Variable) `MONGODB_ATLAS_PRIVATE_KEY` (value secured from step `1.b.`)
         * (**Sensitive**, Environment Variable) `FLY_API_TOKEN` (value secured from step `2.c.`)
-        * (**Sensitive**, Terraform Variable) `promptu_fake_mongodb_init_password` (can be any string - this is only needed to create the MongoDB Atlas cluster for the first time)
+        * (**Sensitive**, Terraform Variable) `promptu_mongodb_fake_init_password` (can be any string - this is only needed to create the MongoDB Atlas cluster for the first time)
         * (Terraform Variable) `promptu_mongodb_org_id` (the organisation ID of the account created in step `1.a.`)
 4. **Prepare Github Workflow**
     4.a. In your forked Github repo, go to _Settings > Security > Secrets > Actions` and create the following repository secrets:

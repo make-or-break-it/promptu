@@ -18,6 +18,12 @@ Promptu is an anonymous social media that allows people to post answers to daily
 
 ## Contributing
 
+## To an app in Promptu
+
 This repo is structured as a monorepo: each directory in the `apps` directory of this repo should map to a component of Promptu and should be as self contained as possible. Each directory should be deployed as its own service.
 
 As such, each component will have its own contributing guide, so to contribute, please first decide which component you need to contribute to, and navigate to that component's directory.
+
+## To the infrastructure
+
+Promptu uses Terraform and Terraform Cloud to manage its state. All infrastructure resources are maintained in the `./infrastructure` directory. Infrastructure changes are only locked to the admins of the Terraform Cloud workspace. If you're an admin, raise a PR with your infrastructure changes and a plan will be automatically be produced via the Terraform/Github integration.

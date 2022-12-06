@@ -2,26 +2,23 @@
 
 This doc outlines how we host and run Promptu, including detailing the tooling used.
 
+The most up to date documentation we have on our infrastructure is in our [infrastructure as code directory](../infrastructure/), so please take a look there if you'd like more detail on how Promptu's infrastructure is built.
+
 ## Prerequisites
 
-Before we can run anything for Promptu, the following had to be manually made:
-
-* A [new Terraform workspace](https://app.terraform.io/app/sanyia/workspaces/new) in Terraform Cloud (used to host our Terraform state)
-* Create a [fly.io organisation](https://fly.io/dashboard/promptu/billing)
-* Create an organisation for MongoDB Atlas (and public/private keys) and add to Terraform as environment variabls
-* fly.io access tokens for:
-    * Github Workflow
-    * Terraform Cloud 
-* [Manually generated fly.toml](https://fly.io/docs/reference/configuration/) for each application - these will be used to inform Fly how to deploy our applications (this would normally be automatically generated with `fly launch`, but we're using Terraform to create our app instead, so we have to default to manual TOML file generation)
-* The infrastructure needs to be created first before the Github workflow/deployments can run
-* Run the Terraform apply
-* Recreate the password main app user for MongoDB and set the fly.io application secret with the new password
+Before we can run anything for Promptu, there are some first-time manual setup that needed to be performed. Checkout the [setup guide](./first_time_setup.md) if you've forked the repo and want Promptu to run on your own infrastructure.
 
 ## Application runtime
 
-## Databases
+[fly.io](fly.io) is used to host and run our applications. We chose fly.io for this project because, at the time of writing, they have more hobby friendly pricing and do not collect bills that are less than $5 a month.
 
-Using MongoDB because it's easier to set up with Terraform and has a more mature provider.
+## Configuration management
+
+We use [fly.io's secrets management](https://fly.io/docs/reference/secrets/#setting-secrets) and [the fly.toml to maintain environment variables](https://fly.io/docs/reference/configuration/) for Promptu and configure it (a la [12 factor app methodology](https://12factor.net/)).
+
+## State management and databases
+
+We use [MongoDB Atlas](https://www.mongodb.com/atlas/database) to store Promptu feed data because it has a hobby friendly pricing tier and has a mature Terraform provider.
 
 ## Infrastructure as Code
 

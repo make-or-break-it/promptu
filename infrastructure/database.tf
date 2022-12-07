@@ -52,6 +52,6 @@ resource "mongodbatlas_database_user" "promptu" {
 resource "mongodbatlas_project_ip_access_list" "promptu-api" {
   project_id    = mongodbatlas_project.promptu.id
 
-  ip_address = data.fly_app.prompt-api.ipaddresses[0]
-  comment    = "IP address for fly.io app ${fly_app.promptu-api.id}"
+  cidr_block = var.prompt_api_cidr_range
+  comment    = "IP address range for fly.io app ${fly_app.promptu-api.id}"
 }

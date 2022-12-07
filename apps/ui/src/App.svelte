@@ -3,8 +3,9 @@
   import Header from "./lib/Header.svelte";
   import PostPrompt from "./lib/PostPrompt.svelte";
   import { posted } from "./stores/postManager"; // this needs to be replaced by an API
+  import { notificationTime } from "./stores/postManager"; // this needs to be replaced by an API
 
-  let timeToPost = true; // SWITCHABLE - based on API results
+  let timeToPost = new Date().getTime() > $notificationTime.getTime();
 </script>
 
 <main>

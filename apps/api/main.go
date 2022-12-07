@@ -22,6 +22,7 @@ func main() {
 	app := &cli.App{
 		Action: func(c *cli.Context) error {
 			store := storage.NewMongoDbStore("promptu-db")
+			// store := storage.NewInMemoryStore()
 			return run(context.Background(), store)
 		},
 	}

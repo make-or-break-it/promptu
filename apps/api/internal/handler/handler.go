@@ -23,7 +23,25 @@ func (h *Handler) Health(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) GetFeed(w http.ResponseWriter, r *http.Request) {
-	feed, err := h.store.GetFeed(context.Background())
+	queryParams := r.URL.Query()
+	dateQuery := queryParams.Get("date")
+
+	var date time.Time
+
+	if dateQuery == "" {
+		date = time.Now()
+	} else {
+		var err error
+
+		date, err = time.Parse("2006-01-02", dateQuery)
+
+		if err != nil {
+			writeError(w, "Date format is not recognised - please use the format YYYY-MM-DD", http.StatusBadRequest)
+			return
+		}
+	}
+
+	feed, err := h.store.GetFeed(context.Background(), date)
 
 	switch {
 	case err != nil:
@@ -57,18 +75,21 @@ func (h *Handler) PostMessage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var post model.Post
+
 	decoder := json.NewDecoder(r.Body)
 	decoder.DisallowUnknownFields()
+
 	if err := decoder.Decode(&post); err != nil {
 		writeError(w, err.Error(), http.StatusBadRequest)
 		return
 	} else if post.Message == "" {
-		writeError(w, "message is missing", http.StatusBadRequest)
+		writeError(w, "Post must include a message", http.StatusBadRequest)
 		return
 	}
 
-	createdAt := time.Now()
-	if err := h.store.PostMessage(context.Background(), post, createdAt); err != nil {
+	post.UtcCreatedAt = time.Now()
+
+	if err := h.store.PostMessage(context.Background(), post); err != nil {
 		writeError(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

@@ -47,19 +47,33 @@ func NewMongoDbStore(dbName string) *PromptuMongoClient {
 	}
 }
 
-func (s *PromptuMongoClient) GetFeed(ctx context.Context) ([]model.Post, error) {
+func (s *PromptuMongoClient) GetFeed(ctx context.Context, date time.Time) ([]model.Post, error) {
+	currDay := time.Date(date.Year(), date.Month(), date.Day(), 0, 0, 0, 0, date.Location())
+	dayAfter := time.Date(date.Year(), date.Month(), date.Day()+1, 0, 0, 0, 0, date.Location())
+
 	col := s.MongoClient.Database(s.DatabaseName).Collection("posts")
 
 	dbCtx, dbCancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer dbCancel()
 
-	result, err := col.Find(dbCtx, bson.D{})
+	opts := options.Find().SetSort(bson.D{{"utcCreatedAt", -1}})
+
+	filter := bson.D{
+		{"$and",
+			bson.A{
+				bson.D{{"utcCreatedAt", bson.D{{"$gte", currDay}}}},
+				bson.D{{"utcCreatedAt", bson.D{{"$lt", dayAfter}}}},
+			},
+		},
+	}
+
+	result, err := col.Find(dbCtx, filter, opts)
 
 	if err != nil {
 		panic(err)
 	}
 
-	var feed []model.Post
+	feed := []model.Post{}
 
 	resultCtx, resultCancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer resultCancel()
@@ -71,13 +85,13 @@ func (s *PromptuMongoClient) GetFeed(ctx context.Context) ([]model.Post, error) 
 	return feed, nil
 }
 
-func (s *PromptuMongoClient) PostMessage(ctx context.Context, post model.Post, createdAt time.Time) error {
+func (s *PromptuMongoClient) PostMessage(ctx context.Context, post model.Post) error {
 	col := s.MongoClient.Database(s.DatabaseName).Collection("posts")
 
 	dbCtx, dbCancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer dbCancel()
 
-	_, err := col.InsertOne(dbCtx, model.Post{User: post.User, Message: post.Message, CreatedAt: createdAt})
+	_, err := col.InsertOne(dbCtx, post)
 
 	if err != nil {
 		return err

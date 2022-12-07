@@ -1,6 +1,7 @@
 <script>
   import { username } from "../stores/username";
   import { posted } from "../stores/postManager";
+  import { notificationTime } from "../stores/postManager";
 
   const env = import.meta.env
 
@@ -15,7 +16,8 @@
         method: 'POST',
         body: JSON.stringify({
           'user': $username,
-          'message': answer
+          'message': answer,
+          'utcNotificationTime': $notificationTime.toISOString(),
         }),
          headers: {
           'Content-Type': 'application/json'

@@ -7,11 +7,7 @@
     let response = await fetch(feedEndpoint)
     let feedContent = await response.json()
 
-    if ("posts" in feedContent) {
-      return feedContent["posts"]
-    } else {
-      return []
-    }
+    return feedContent
   })()
 </script>
 
@@ -22,7 +18,7 @@
     {#each feed as post}
       <div class="post">
         <p class="message">{post.message}</p>
-        <p class="user">{post.user}</p>
+        <p class="user">{post.user} - {new Date(post.utcCreatedAt).toUTCString()}</p>
       </div>
     {:else}
       <p class="overlay">No posts yet!</p>

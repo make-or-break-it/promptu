@@ -13,7 +13,7 @@
 
 <div class="feed">
   {#await getFeed}
-    <p class="overlay">No posts yet!</p>
+    <p class="overlay">Loading posts</p>
   {:then feed}
     {#each feed as post}
       <div class="post">
@@ -21,7 +21,7 @@
         <p class="user">{post.user} - {new Date(post.utcCreatedAt).toUTCString()}</p>
       </div>
     {:else}
-      <p class="overlay">No posts yet!</p>
+      <p class="overlay">No one's posted yet!</p>
     {/each}
   {:catch err}
     <p class="overlay error">Error loading posts - computer says: <span class="error-code">{err.message}</span></p>

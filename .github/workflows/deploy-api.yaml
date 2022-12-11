@@ -3,7 +3,7 @@ name: deploy-api
 on:
   push:
     paths:
-      - api/**
+      - apps/api/**
       - .github/**
     branches:
     - main

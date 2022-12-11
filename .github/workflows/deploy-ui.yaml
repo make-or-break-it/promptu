@@ -3,7 +3,7 @@ name: deploy-ui
 on:
   push:
     paths:
-      - ui/**
+      - apps/ui/**
       - .github/**
     branches:
     - main

@@ -8,7 +8,7 @@ on:
     - 'cicd/**'
     - dev
     paths:
-      - api/**
+      - apps/api/**
       - .github/**
 
 jobs:

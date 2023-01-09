@@ -2,7 +2,7 @@
 
 Promptu's code base doesn't just contain its application code, but also its infrastructure code. Therefore, to build and run Promptu in its entirety, some manual, one-off tasks need to be completed for the first time before it can be deployed somwhere. The list of steps to follow might seem overwhelming, but remember you only need to do this once at the start of deploying Promptu! _Build it and forget it!_
 
-Before starting, it's recommended that you run all of these steps [in VS Code and inside the devcontainer provided with the repo](https://code.visualstudio.com/docs/devcontainers/containers#_open-an-existing-workspace-in-a-container). This will ensure you have all the CLI tools needed to run the below steps.
+Before starting, it's recommended that you run all of these steps [in VS Code and inside the devcontainer provided with the repo](https://code.visualstudio.com/docs/devcontainers/containers#_quick-start-open-an-existing-folder-in-a-container). This will ensure you have all the CLI tools needed to run the below steps. Just make sure you have the [prerequisites to run devcontainers installed](https://code.visualstudio.com/docs/devcontainers/containers#_installation).
 
 If you've forked Promptu and want to get its end-to-end workflow running, here's what you need to do:
 

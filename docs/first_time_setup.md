@@ -27,7 +27,7 @@ If you've forked Promptu and want to get its end-to-end workflow running, here's
         * (Terraform Variable) `promptu_mongodb_org_id` (the organisation ID of the account created in step `1.1.`)
 4. **Prepare Github Workflow**
     1. In your forked Github repo, go to _Settings > Security > Secrets > Actions` and create the following repository secrets:
-        *(**Sensitive**) `FLY_API_TOKEN` (value secured from step `2.4.`)
+        * (**Sensitive**) `FLY_API_TOKEN` (value secured from step `2.4.`)
 5. **Raise your first PR and merge it into `main` to build your infrastructure and deploy your apps** - now that all the scaffolding has been set up, it's time to dress it up with some bricks! Merging your first PR will create the infrastructure in MongoDB and fly.io, while also deploying the latest state of Promptu to fly.io. But you're not finished yet! You still need to give your backend access to the DBs!
 6. **Connect promptu-api to MongoDB Atlas**
     1. Find out your `promptu-api` public IP address by using `flyctl ssh issue` to issue an SSH key for your fly.io aap (entering `~/.ssh/promptu-api-fly-io` as your path to store the keys) and then `flyctl ssh console` from with the `apps/api` directory

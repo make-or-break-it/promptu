@@ -4,7 +4,9 @@ The API is written in Golang.
 
 ## Run
 
-```go run cmd/main.go```
+```
+go run cmd/main.go
+```
 
 ### Running using docker
 

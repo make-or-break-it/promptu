@@ -8,7 +8,7 @@ If you've forked Promptu and want to get its end-to-end workflow running, here's
 
 1. **Setup a MongoDB Atlas account (free)**
     1. Create an account in [MongoDB Atlas](https://www.mongodb.com/atlas/database)
-    2. In _Access Manager_, create an API key for Terraform (this can have any description - example: `Promptu Terraform`) with the permissions: `Organization Member, Organization Project Creator`. Safely record the public and private keys - these keys will be used by Terraform to manage your MongoDB account, so make sure to keep it safe for now! You'll use this later.
+    2. In _Access Manager_, create an API key for Terraform (this can have any description - example: `Promptu Terraform`) with the permissions: `Organization Project Creator`. Safely record the public and private keys - these keys will be used by Terraform to manage your MongoDB account, so make sure to keep it safe for now! You'll use this later.
     3. From the same page where you got the API key, log organisation ID the MongoDB organisation - this in the URL, and is the long random string in between the URL path (e.g. `https://cloud.mongodb.com/v2#/org/<long-string>/access/users`)
 2. **Setup fly.io (free/low cost)**
     1. Create an account in [fly.io](https://fly.io/)
@@ -20,7 +20,7 @@ If you've forked Promptu and want to get its end-to-end workflow running, here's
     1. Create an account in [Terraform Cloud](https://cloud.hashicorp.com/products/terraform)
     2. Create a new workspace for Promptu (choose the _Version control workflow_)
     3. In _Configure settings_, go to _Advanced options_ and set your _Terraform Working Directory_ to `infrastructure`
-    4. Create the following environment variables in your `promptu` Terraform Cloud workspace:
+    4. Create the following environment variables in your `promptu` Terraform Cloud workspace (settings in brackets):
         * (**Sensitive**, Environment Variable) `MONGODB_ATLAS_PUBLIC_KEY` (value secured from step `1.2.`)
         * (**Sensitive**, Environment Variable) `MONGODB_ATLAS_PRIVATE_KEY` (value secured from step `1.2.`)
         * (**Sensitive**, Environment Variable) `FLY_API_TOKEN` (value secured from step `2.3.`)

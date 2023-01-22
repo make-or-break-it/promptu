@@ -26,7 +26,7 @@ resource "mongodbatlas_database_user" "promptu" {
 
   # In order to create a DB, we have to set a fictional first time password then create
   # a real password in the MongoDB Atlas UI. Updating the password in the UI will not
-  # cause configuration drift. This can be set to an empty string.
+  # cause configuration drift. This cannot be set to an empty string.
   password = var.promptu_mongodb_fake_init_password
   username = "promptu"
 

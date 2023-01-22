@@ -32,5 +32,5 @@ a fictional first time password then create a real password in the MongoDB
 Atlas UI. Updating the password in the UI will not cause configuration drift 
 in Terraform.
 EOF
-  default = ""
+  default = "fake-password"
 }

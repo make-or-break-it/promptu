@@ -26,7 +26,7 @@ resource "mongodbatlas_database_user" "promptu" {
 
   # In order to create a DB, we have to set a fictional first time password then create
   # a real password in the MongoDB Atlas UI. Updating the password in the UI will not
-  # cause configuration drift. 
+  # cause configuration drift. This can be set to an empty string.
   password = var.promptu_mongodb_fake_init_password
   username = "promptu"
 
@@ -52,6 +52,6 @@ resource "mongodbatlas_database_user" "promptu" {
 resource "mongodbatlas_project_ip_access_list" "promptu-api" {
   project_id    = mongodbatlas_project.promptu.id
 
-  cidr_block = var.prompt_api_cidr_range
+  cidr_block = var.promptu_api_cidr_range
   comment    = "IP address range for fly.io app ${fly_app.promptu-api.id}"
 }

@@ -27,14 +27,22 @@ If you've forked Promptu and want to get its end-to-end workflow running, here's
         * (Terraform Variable) `promptu_mongodb_org_id` (the organisation ID retrieved in step `1.3.`)
         * (Terraform Variable) `promptu_fly_io_org_name` (the organisation name in fly.io created in step `2.2.`)
         * (Terraform Variable) `promptu_fly_io_name_suffix` (application name suffix to make your version of Promptu app globally unique - the name will become `promptu-${promptu_fly_io_name_suffix}` in fly.io)
-
+    5. After all your config variables have been supplied, you can create an initial run to create the base resources necessary to run your deployments - you can do this through the Terraform UI by going to _Runs > Actions > Start new run_. Once you're happy with the plan, you can apply!
+    6. Once your plan has been successfully applied, you need to ensure you have the right connection details for your application to be deployed successfully for the first time - in your MongoDB Atlas `promptu` project, go to _Security > Database Access_ and edit the `promptu` user. Edit the `promptu` user's password and autogenerate a secure password - copy the value and keep it safe!
+    7. In your MongoDB Atlas `promptu` project, go to _Deployment > Database_ and click on _Connect_ on your `promptu-db`. Select _Connect your application_ and copy the connection string up until (but not including!) the URL path and query strings. So if you're connection string looks like `mongodb+srv://promptu:<password>@promptu-db.p4jpncm.mongodb.net/?retryWrites=true&w=majority`, you only need `mongodb+srv://promptu:<password>@promptu-db.p4jpncm.mongodb.net`.
+    8. Replace `<password>` in the connection string from `3.7.` with the value secured from `3.6.` - keep this value secure!
+    9. Use the `flyctl` CLI tool to create a `PROMPTU_MONGODB_URL` secret with your MongoDB connection URL from `3.8.` with the following script- you have to be in the same directory as the API `fly.toml` (**note:** make sure you're running this from a safe environment or from within a script, as your secret will be preserved within your shell history if run directly in your shell environment): 
+    ```sh
+    cd apps/api
+    flyctl secrets set --detach PROMPTU_MONGODB_URL="<secure value from 3.8.>"
+    ```
 4. **Prepare Github Workflow**
     1. In your forked Github repo, go to _Settings > Security > Secrets > Actions_ and create the following repository secrets:
         * (**Sensitive**) `FLY_API_TOKEN` (value secured from step `2.4.`)
     2. Update your `fly.toml` files to include the suffix you provided in step `3.4` (if you chose `paper_mache` as your suffix, then your app name will be `promptu-paper_mache` for the `ui` component and `promptu-api-paper_mache` for the `api` component)
-5. **Raise your first PR and merge it into `main` to build your infrastructure and deploy your apps** - now that all the scaffolding has been set up, it's time to dress it up with some bricks! Merging your first PR will create the infrastructure in MongoDB and fly.io, while also deploying the latest state of Promptu to fly.io. But you're not finished yet! You still need to give your backend access to the DBs!
-6. **Connect promptu-api to MongoDB Atlas**
-    1. Find out your `promptu-api` public IP address by using `flyctl ssh issue` to issue an SSH key for your fly.io aap (entering `~/.ssh/promptu-api-fly-io` as your path to store the keys) and then `flyctl ssh console` from with the `apps/api` directory
+5. **Raise your first PR and merge it into `main` to build your infrastructure and deploy your apps** - now that all the scaffolding has been set up, it's time to add some bricks! Merging your first PR will deploy your application to fly.io for the first time! All subsequent PRs will not only deploy the latest changes to fly.io, but it will also update your infrastructure through Terraform Cloud. But we're not done yet - we still need to secure access to our DB!
+6. **Secure your promptu-api to MongoDB Atlas**
+    1. Right now, your DB can be accessed by anyone in the world! We need to restrict this so only our app can communicate with it. Find out your `promptu-api` public IP address by using `flyctl ssh issue` to issue an SSH key for your fly.io aap (entering `~/.ssh/promptu-api-fly-io` as your path to store the keys) and then `flyctl ssh console` from with the `apps/api` directory
     2. Once inside, run the following commands in order to install `dig` and to find out your app's public IP address - record this IP address
     ```sh
     apt update
@@ -42,13 +50,8 @@ If you've forked Promptu and want to get its end-to-end workflow running, here's
     dig +short txt ch whoami.cloudflare @1.0.0.1
     ```
     3. Modify the IP address you retrieved from step `6.2.` so that the last octet is 0 and it has a 24 bit subnet mask. So for example, if your IP address is `1.2.3.4`, then it should look like `1.2.3.0/24`
-    4. Save the value from `6.3.` into Terraform Cloud as a Terraform variable called `prompt_api_cidr_range`, then perform a new run - this should whitelist your app's IP address to MongoDB Atlas 
-    5. In your MongoDB Atlas `promptu` project, go to _Security > Database Access_ and edit the `promptu` user. Edit the `promptu` user's password and autogenerate a secure password - copy the value and keep it safe!
-    6. In your MongoDB Atlas `promptu` project, go to _Deployment > Database_ and click on _Connect_ on your `promptu-db`. Select _Connect your application_ and copy the connection string up until (but not including!) the last `/`. So if you're connection string looks like `mongodb+srv://promptu:<password>@promptu-db.p4jpncm.mongodb.net/?retryWrites=true&w=majority`, you only need `mongodb+srv://promptu:<password>@promptu-db.p4jpncm.mongodb.net`.
-    7. Replace `<password>` in the connection string from `6.6.` with the value secured from `6.5.` - keep this value secure!
-    8. Use the `flyctl` CLI tool to create a `PROMPTU_MONGODB_URL` secret with your MongoDB connection URL from `6.7.` with the following script (**note:** make sure you're running this from a safe environment or from within a script, as your secret will be preserved within your shell history if run directly in your shell environment): 
-    ```sh
-    flyctl secrets set --detach PROMPTU_MONGODB_URL="<secure value from 6.7.>"
-    ```
+    4. Save the value from `6.3.` into Terraform Cloud as a Terraform variable called `prompt_api_cidr_range`, then perform a new run - this should whitelist only your app's IP address to MongoDB Atlas 
 
 And you're all set! You should now be able to connect to your application from through its fly.io domain name! 🚀
+
+Rest assured, most of this setup only ever happens once when you create your application. From here on out, all of your changes will be automatically applied on merge based on the settings in your `.github/workflows` config.

@@ -4,6 +4,8 @@ on:
   pull_request:
     branches:
     - main
+    - mir/main
+    - eds/main
     - 'release/**'
     - 'cicd/**'
     - dev

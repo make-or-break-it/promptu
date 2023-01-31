@@ -7,6 +7,8 @@ on:
       - .github/**
     branches:
     - main
+    - mir/main
+    - eds/main
 
 jobs:
   test-api:

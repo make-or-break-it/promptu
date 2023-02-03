@@ -9,7 +9,7 @@ processes = []
 
 [build]
   [build.args]
-    PUBLIC_PROMPTU_API_HOST="https://promptu-api.fly.dev"
+    PUBLIC_PROMPTU_API_HOST="https://promptu-api-mir.fly.dev"
 
 [[services]]
   http_checks = []

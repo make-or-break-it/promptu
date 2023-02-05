@@ -1,0 +1,29 @@
+app = "kafka"
+kill_signal = "SIGINT"
+kill_timeout = 5
+processes = []
+
+[env]
+  KAFKA_ZOOKEEPER_CONNECT="0.0.0.0:2181"
+  KAFKA_LISTENERS="0.0.0.0:9092"
+  KAFKA_HEAP_OPTS="-Xmx256M -Xms256M"
+
+[build]
+  image = "wurstmeister/kafka:latest"
+
+[[services]]
+  internal_port = 9092
+  protocol = "tcp"
+
+  [[services.ports]]
+    port = 9092
+
+  [[services.tcp_checks]]
+    grace_period = "1s"
+    interval = "15s"
+    restart_limit = 0
+    timeout = "2s"
+
+[mounts]
+  source="kafka_data"
+  destination="/data"

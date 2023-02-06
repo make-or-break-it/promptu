@@ -6,7 +6,7 @@ processes = []
 [env]
   KAFKA_ZOOKEEPER_CONNECT="149.248.218.77:2181"
   KAFKA_LISTENERS="PLAINTEXT://localhost:9092"
-  KAFKA_HEAP_OPTS="-Xmx125M -Xms125M"
+  KAFKA_HEAP_OPTS="-Xmx1024M -Xms1024M"
 
 [build]
   image = "wurstmeister/kafka:latest"

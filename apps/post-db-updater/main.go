@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
@@ -14,16 +15,28 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"promptu/api/internal/handler"
-	"promptu/api/internal/storage"
+	"promptu/apps/post-db-updater/internal/config"
+	"promptu/apps/post-db-updater/internal/handler"
+	"promptu/apps/post-db-updater/internal/storage"
+
+	"github.com/Shopify/sarama"
 )
 
 func main() {
 	app := &cli.App{
 		Action: func(c *cli.Context) error {
+
+			ctx := context.Background()
+			cfg := config.AppConfig() // todo change
+
 			store := storage.NewMongoDbStore("promptu-db")
-			// store := storage.NewInMemoryStore()
-			return run(context.Background(), store)
+			consumer, err := sarama.NewConsumerGroup(strings.Split(cfg.KafkaBrokers, ","), "post-producer", createConsumerGroupConfig(cfg.KafkaVersion))
+			if err != nil {
+				log.Panicf("Error creating consumer group client: %v", err)
+			}
+
+			go handler.Consume(ctx, handler.NewMsgHandler(store), cfg.PostTopic, consumer)
+			return runHTTPServer(ctx)
 		},
 	}
 
@@ -32,9 +45,9 @@ func main() {
 	}
 }
 
-func run(ctx context.Context, store storage.Store) error {
+func runHTTPServer(ctx context.Context) error {
 
-	r := createRouter(store)
+	r := createRouter()
 	errCh := make(chan error, 1)
 
 	log.Print("Starting the server on port 8080")
@@ -78,13 +91,9 @@ func getAddress() string {
 	return host + ":" + port
 }
 
-func createRouter(store storage.Store) *mux.Router {
-	hndlr := handler.NewHandler(store)
-
+func createRouter() *mux.Router {
 	r := mux.NewRouter()
-	r.HandleFunc("/feed", hndlr.GetFeed).Methods(http.MethodGet, http.MethodOptions)
-	r.HandleFunc("/post", hndlr.PostMessage).Methods(http.MethodPost, http.MethodOptions)
-	r.HandleFunc("/health", hndlr.Health).Methods(http.MethodGet, http.MethodOptions)
+	r.HandleFunc("/health", handler.Health).Methods(http.MethodGet, http.MethodOptions)
 
 	return r
 }
@@ -96,4 +105,24 @@ func middleware(h http.Handler) http.Handler {
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		h.ServeHTTP(w, r)
 	})
+}
+
+func createConsumerGroupConfig(version string) *sarama.Config {
+	v, err := sarama.ParseKafkaVersion(version)
+	if err != nil {
+		log.Panicf("Error parsing Kafka version: %v", err)
+	}
+
+	/**
+	 * Construct a new Sarama configuration.
+	 * The Kafka cluster version has to be defined before the consumer/producer is initialized.
+	 */
+	config := sarama.NewConfig()
+	config.Version = v
+	config.Consumer.Offsets.Initial = sarama.OffsetOldest
+	config.Consumer.Group.Rebalance.GroupStrategies = []sarama.BalanceStrategy{sarama.BalanceStrategyRoundRobin}
+	// sticky: []sarama.BalanceStrategy{sarama.BalanceStrategySticky}
+	// range: []sarama.BalanceStrategy{sarama.BalanceStrategyRange}
+
+	return config
 }

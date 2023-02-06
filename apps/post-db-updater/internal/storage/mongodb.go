@@ -3,11 +3,10 @@ package storage
 import (
 	"context"
 	"fmt"
-	"promptu/api/internal/config"
-	"promptu/api/internal/model"
+	"promptu/apps/post-db-updater/internal/config"
+	"promptu/apps/post-db-updater/internal/model"
 	"time"
 
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -45,44 +44,6 @@ func NewMongoDbStore(dbName string) *PromptuMongoClient {
 		MongoClient:  client,
 		DatabaseName: dbName,
 	}
-}
-
-func (s *PromptuMongoClient) GetFeed(ctx context.Context, date time.Time) ([]model.Post, error) {
-	currDay := time.Date(date.Year(), date.Month(), date.Day(), 0, 0, 0, 0, date.Location())
-	dayAfter := time.Date(date.Year(), date.Month(), date.Day()+1, 0, 0, 0, 0, date.Location())
-
-	col := s.MongoClient.Database(s.DatabaseName).Collection("posts")
-
-	dbCtx, dbCancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer dbCancel()
-
-	opts := options.Find().SetSort(bson.D{{"utcCreatedAt", -1}})
-
-	filter := bson.D{
-		{"$and",
-			bson.A{
-				bson.D{{"utcCreatedAt", bson.D{{"$gte", currDay}}}},
-				bson.D{{"utcCreatedAt", bson.D{{"$lt", dayAfter}}}},
-			},
-		},
-	}
-
-	result, err := col.Find(dbCtx, filter, opts)
-
-	if err != nil {
-		panic(err)
-	}
-
-	feed := []model.Post{}
-
-	resultCtx, resultCancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer resultCancel()
-
-	if err = result.All(resultCtx, &feed); err != nil {
-		panic(err)
-	}
-
-	return feed, nil
 }
 
 func (s *PromptuMongoClient) PostMessage(ctx context.Context, post model.Post) error {

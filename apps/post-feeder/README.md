@@ -26,11 +26,6 @@ PORT=8080
 
 ## Supported endpoints
 
-Post with:
-```
-curl -i -XPOST  -H "Content-Type: application/json" -d '{"user":"some_user","message":"Test message from localhost", "utcNotificationTime":"2022-12-09T02:17:54.760Z"}' http://localhost:8080/post
-```
-
 Get feed with:
 ```
 curl -i http://localhost:8080/feed

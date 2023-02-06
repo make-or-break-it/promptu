@@ -1,12 +1,12 @@
-module promptu/api
+module promptu/apps/post-feeder
 
 go 1.19
 
 require (
 	github.com/caarlos0/env/v6 v6.10.1
 	github.com/gorilla/mux v1.8.0
-	github.com/urfave/cli/v2 v2.20.2
-	go.mongodb.org/mongo-driver v1.11.0
+	github.com/urfave/cli/v2 v2.24.3
+	go.mongodb.org/mongo-driver v1.11.1
 )
 
 require (

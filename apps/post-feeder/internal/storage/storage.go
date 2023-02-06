@@ -2,11 +2,10 @@ package storage
 
 import (
 	"context"
-	"promptu/api/internal/model"
+	"promptu/apps/post-feeder/internal/model"
 	"time"
 )
 
 type Store interface {
 	GetFeed(ctx context.Context, date time.Time) ([]model.Post, error)
-	PostMessage(ctx context.Context, post model.Post) error
 }

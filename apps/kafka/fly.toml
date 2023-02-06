@@ -4,9 +4,9 @@ kill_timeout = 5
 processes = []
 
 [env]
-  KAFKA_ZOOKEEPER_CONNECT="0.0.0.0:2181"
-  KAFKA_LISTENERS="0.0.0.0:9092"
-  KAFKA_HEAP_OPTS="-Xmx256M -Xms256M"
+  KAFKA_ZOOKEEPER_CONNECT="149.248.218.77:2181"
+  KAFKA_LISTENERS="PLAINTEXT://localhost:9092"
+  KAFKA_HEAP_OPTS="-Xmx125M -Xms125M"
 
 [build]
   image = "wurstmeister/kafka:latest"

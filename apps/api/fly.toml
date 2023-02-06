@@ -1,4 +1,4 @@
-app = "promptu-api-isatest12"
+app = "promptu-api"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []

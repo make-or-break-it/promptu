@@ -5,7 +5,7 @@
 
   const env = import.meta.env
 
-  const postEndpoint = `${env.PUBLIC_PROMPTU_API_HOST}/post`
+  const postEndpoint = `${env.PUBLIC_PROMPTU_POST_API_HOST}/post`
   const prompt = "Living or dead, who would you spend 3 hours with and why?";
 
   let answer = "";

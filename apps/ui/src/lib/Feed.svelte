@@ -1,7 +1,7 @@
 <script>
   const env = import.meta.env
 
-  const feedEndpoint = `${env.PUBLIC_PROMPTU_API_HOST}/feed`
+  const feedEndpoint = `${env.PUBLIC_PROMPTU_FEEDER_API_HOST}/feed`
 
   const getFeed = (async () => {
     let response = await fetch(feedEndpoint)

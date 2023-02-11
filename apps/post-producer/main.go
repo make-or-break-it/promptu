@@ -159,7 +159,7 @@ func createTopic(topic string) *sarama.CreateTopicsRequest {
 		TopicDetails: map[string]*sarama.TopicDetail{
 			topic: {
 				NumPartitions:     10,
-				ReplicationFactor: 2,
+				ReplicationFactor: 1,
 				// ReplicaAssignment: map[int32][]int32{
 				// 	0: {0, 1, 2},
 				// },

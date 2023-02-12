@@ -8,6 +8,13 @@ processes = []
   [build.args]
     ALLOW_ANONYMOUS_LOGIN="yes"
 
+[env]
+  ZOO_DATA_LOG_DIR="/data"
+
+[mounts]
+  destination = "/data"
+  source = "zookeeper_data"
+
 [[services]]
   internal_port = 2181
   protocol = "tcp"

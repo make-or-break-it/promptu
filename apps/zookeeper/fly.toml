@@ -1,0 +1,31 @@
+app = "zookeeper"
+kill_signal = "SIGINT"
+kill_timeout = 5
+processes = []
+
+[build]
+  image = "wurstmeister/zookeeper:latest"
+  [build.args]
+    ALLOW_ANONYMOUS_LOGIN="yes"
+
+[env]
+  ZOO_DATA_LOG_DIR="/data"
+
+[mounts]
+  destination = "/data"
+  source = "zookeeper_data"
+
+[[services]]
+  internal_port = 2181
+  protocol = "tcp"
+
+  [[services.ports]]
+    port = "2181"
+
+  [[services.tcp_checks]]
+    grace_period = "1s"
+    interval = "15s"
+    restart_limit = 0
+    timeout = "2s"
+
+

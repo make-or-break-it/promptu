@@ -8,7 +8,6 @@ on:
     branches:
     - main
     - mir/main
-    - eds/main
 
 jobs:
   test-api:

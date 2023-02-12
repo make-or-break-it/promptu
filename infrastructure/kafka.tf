@@ -35,13 +35,13 @@ resource "fly_machine" "kafka" {
 
 resource "fly_volume" "kafka" {
   name       = "kafka_data"
-  app        = "kafka"
+  app        = fly_app.kafka.name
   size       = 1
   region     = "lhr"
   depends_on = [fly_app.kafka]
 }
 
 resource "fly_ip" "kafka-ip" {
-  app  = "kafka"
+  app  = fly_app.kafka.name
   type = "v6"
 }

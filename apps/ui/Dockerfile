@@ -5,7 +5,8 @@ FROM base as build
 
 COPY . .
 
-ARG PUBLIC_PROMPTU_API_HOST="http://localhost:8080"
+ARG PUBLIC_PROMPTU_POST_API_HOST="http://localhost:8080"
+ARG PUBLIC_PROMPTU_FEEDER_API_HOST="http://localhost:8081"
 
 RUN npm ci --only=production && \
     npm run build

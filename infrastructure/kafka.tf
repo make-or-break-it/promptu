@@ -1,13 +1,36 @@
-resource "fly_app" "kafka" {
-  name = "kafka"
-  org = var.promptu_fly_io_org_name
-}
+resource "fly_machine" "kafka" {
+  app      = fly_app.kafka.name
+  region   = "lhr"
+  name     = "kafka"
+  image    = "wurstmeister/kafka:latest"
+  memorymb = 2046
 
-// TODO we need to raise the memory for the kafka machine to 2GB - ideally from terraform
+  env = {
+    KAFKA_ZOOKEEPER_CONNECT              = "zookeeper.fly.dev:2181"
+    KAFKA_ADVERTISED_LISTENERS           = "INSIDE://:9092,OUTSIDE://${fly_app.kafka.appurl}:9094"
+    KAFKA_LISTENERS                      = "INSIDE://:9092,OUTSIDE://:9094"
+    KAFKA_LISTENER_SECURITY_PROTOCOL_MAP = "INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT"
+    KAFKA_INTER_BROKER_LISTENER_NAME     = "INSIDE"
+    KAFKA_HEAP_OPTS                      = "-Xmx1024M -Xms1024M"
+    KAFKA_CREATE_TOPICS                  = "posts:10:1:compact"
+  }
 
-resource "fly_app" "zookeeper" {
-  name = "zookeeper"
-  org = var.promptu_fly_io_org_name
+  services = [
+    {
+      ports = [
+        {
+          port = 9094
+        }
+      ]
+      "protocol" : "tcp",
+      "internal_port" : 9092
+    }
+  ]
+
+  mounts = [{
+    path   = "/data",
+    volume = "${fly_volume.kafka.name}"
+  }]
 }
 
 resource "fly_volume" "kafka" {
@@ -18,20 +41,7 @@ resource "fly_volume" "kafka" {
   depends_on = [fly_app.kafka]
 }
 
-resource "fly_volume" "zookeeper" {
-  name       = "zookeeper_data"
-  app        = "zookeeper"
-  size       = 1
-  region     = "lhr"
-  depends_on = [fly_app.zookeeper]
-}
-
-resource "fly_ip" "kafkaIP" {
+resource "fly_ip" "kafka-ip" {
   app  = "kafka"
-  type = "v6"
-}
-
-resource "fly_ip" "zookeeperIP" {
-  app  = "zookeeper"
   type = "v6"
 }

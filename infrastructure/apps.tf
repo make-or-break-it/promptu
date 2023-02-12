@@ -17,3 +17,13 @@ resource "fly_app" "promptu-db-updater" {
   name = "promptu-db-updater"
   org  = var.promptu_fly_io_org_name
 }
+
+resource "fly_app" "kafka" {
+  name = "kafka"
+  org  = var.promptu_fly_io_org_name
+}
+
+resource "fly_app" "zookeeper" {
+  name = "zookeeper"
+  org  = var.promptu_fly_io_org_name
+}

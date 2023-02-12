@@ -7,7 +7,6 @@ on:
       - .github/**
     branches:
       - main
-      - eds/main
 
 jobs:
   deploy-kafka:

@@ -1,20 +1,20 @@
 terraform {
   cloud {
-    organization = "sanyia"
+    organization = "make-or-break-it"
 
     workspaces {
-      name = "promptu"
+      name = "promptu-eds"
     }
   }
 
   required_providers {
     fly = {
-      source = "fly-apps/fly"
+      source  = "fly-apps/fly"
       version = "~> 0.0.20"
     }
 
     mongodbatlas = {
-      source = "mongodb/mongodbatlas"
+      source  = "mongodb/mongodbatlas"
       version = "~> 1.6"
     }
   }

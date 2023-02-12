@@ -3,7 +3,27 @@ resource "fly_app" "promptu" {
   org = var.promptu_fly_io_org_name
 }
 
-resource "fly_app" "promptu-api" {
-  name = var.promptu_fly_io_name_suffix == "" ? "promptu-api" : "promptu-api-${var.promptu_fly_io_name_suffix}"
+resource "fly_app" "promptu-feeder-api" {
+  name = "promptu-feeder-api"
+  org = var.promptu_fly_io_org_name
+}
+
+resource "fly_app" "promptu-post-api" {
+  name = "promptu-post-api"
+  org = var.promptu_fly_io_org_name
+}
+
+resource "fly_app" "promptu-db-updater" {
+  name = "promptu-db-updater"
+  org = var.promptu_fly_io_org_name
+}
+
+resource "fly_app" "kafka" {
+  name = "kafka"
+  org = var.promptu_fly_io_org_name
+}
+
+resource "fly_app" "zookeeper" {
+  name = "zookeeper"
   org = var.promptu_fly_io_org_name
 }

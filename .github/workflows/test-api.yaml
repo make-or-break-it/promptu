@@ -3,11 +3,11 @@ name: test-api
 on:
   pull_request:
     branches:
-    - main
-    - mir/main
-    - 'release/**'
-    - 'cicd/**'
-    - dev
+      - main
+      - mir/main
+      - "release/**"
+      - "cicd/**"
+      - dev
     paths:
       - apps/api/**
       - .github/**

@@ -1,0 +1,18 @@
+name: deploy-kafka
+
+on:
+  push:
+    paths:
+      - apps/kafka/**
+      - .github/**
+    branches:
+      - main
+
+jobs:
+  deploy-kafka:
+    name: Deploy Kafka
+    uses: ./.github/workflows/reusable-deploy.yaml
+    with:
+      component: apps/kafka
+    secrets:
+      fly-api-token: ${{ secrets.FLY_API_TOKEN }}

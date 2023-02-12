@@ -19,8 +19,8 @@ jobs:
   deploy:
     name: Deploy component
     defaults:
-        run:
-          working-directory: ${{ inputs.component }}
+      run:
+        working-directory: ${{ inputs.component }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

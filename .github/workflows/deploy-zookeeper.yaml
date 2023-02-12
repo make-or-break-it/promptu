@@ -1,0 +1,19 @@
+name: deploy-zookeeper
+
+on:
+  push:
+    paths:
+      - apps/zookeeper/**
+      - .github/**
+    branches:
+      - main
+      - eds/main
+
+jobs:
+  deploy-zookeeper:
+    name: Deploy Zookeeper
+    uses: ./.github/workflows/reusable-deploy.yaml
+    with:
+      component: apps/zookeeper
+    secrets:
+      fly-api-token: ${{ secrets.FLY_API_TOKEN }}

@@ -1,0 +1,25 @@
+name: deploy-post-api
+
+on:
+  push:
+    paths:
+      - apps/post-producer/**
+      - .github/**
+    branches:
+      - main
+      - eds/main
+
+jobs:
+  test-api:
+    name: Test Post API
+    uses: ./.github/workflows/reusable-test-go.yaml
+    with:
+      component: apps/post-producer
+  deploy-api:
+    name: Deploy Post API
+    uses: ./.github/workflows/reusable-deploy.yaml
+    with:
+      component: apps/post-producer
+    secrets:
+      fly-api-token: ${{ secrets.FLY_API_TOKEN }}
+    needs: [test-api]

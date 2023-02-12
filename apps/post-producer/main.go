@@ -29,7 +29,7 @@ func main() {
 				Name:        "brokers",
 				Usage:       "The address of the kafka brokers",
 				Destination: &brokers,
-				Value:       "149.248.217.129:9092",
+				Value:       "kafka.fly.dev:9094",
 			},
 			&cli.StringFlag{
 				Name:        "topic",

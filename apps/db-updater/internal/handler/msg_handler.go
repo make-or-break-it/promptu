@@ -2,6 +2,8 @@ package handler
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 	"log"
 	"promptu/apps/post-db-updater/internal/model"
 	"promptu/apps/post-db-updater/internal/storage"
@@ -55,8 +57,11 @@ func (handler *MsgHandler) ConsumeClaim(session sarama.ConsumerGroupSession, cla
 			log.Printf("Message claimed: value = %s, timestamp = %v, topic = %s", string(message.Value), message.Timestamp, message.Topic)
 			session.MarkMessage(message, "")
 			var post model.Post
+			if err := json.Unmarshal(message.Value, &post); err != nil {
+				return fmt.Errorf("error while unmarshalling post: %w", err)
+			}
 			if err := handler.store.PostMessage(context.Background(), post); err != nil {
-				return err
+				return fmt.Errorf("error while posting message to the db: %w", err)
 			}
 
 		// Should return when `session.Context()` is done.

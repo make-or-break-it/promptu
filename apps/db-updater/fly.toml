@@ -1,4 +1,4 @@
-app = "post-db-updater"
+app = "db-updater"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []

@@ -3,6 +3,8 @@ resource "fly_app" "kafka" {
   org = var.promptu_fly_io_org_name
 }
 
+// TODO we need to raise the memory for the kafka machine to 2GB - ideally from terraform
+
 resource "fly_app" "zookeeper" {
   name = "zookeeper"
   org = var.promptu_fly_io_org_name

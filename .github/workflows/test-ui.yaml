@@ -3,16 +3,15 @@ name: test-ui
 on:
   pull_request:
     branches:
-    - main
-    - mir/main
-    - eds/main
-    - 'release/**'
-    - 'cicd/**'
-    - dev
+      - main
+      - mir/main
+      - eds/main
+      - "release/**"
+      - "cicd/**"
+      - dev
     paths:
       - apps/ui/**
       - .github/**
-
 
 jobs:
   test-ui:

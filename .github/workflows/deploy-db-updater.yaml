@@ -6,7 +6,8 @@ on:
       - apps/db-updater/**
       - .github/**
     branches:
-    - eds/main
+      - main
+      - eds/main
 
 jobs:
   test-app:
@@ -21,4 +22,4 @@ jobs:
       component: apps/db-updater
     secrets:
       fly-api-token: ${{ secrets.FLY_API_TOKEN }}
-    needs: [ test-app ]
+    needs: [test-app]

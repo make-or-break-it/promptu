@@ -13,8 +13,8 @@ jobs:
     name: Test NodeJS app
     runs-on: ubuntu-latest
     defaults:
-        run:
-          working-directory: ${{ inputs.component }}
+      run:
+        working-directory: ${{ inputs.component }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3

@@ -6,7 +6,8 @@ on:
       - apps/kafka/**
       - .github/**
     branches:
-    - eds/main
+      - main
+      - eds/main
 
 jobs:
   deploy-kafka:
@@ -16,4 +17,3 @@ jobs:
       component: apps/kafka
     secrets:
       fly-api-token: ${{ secrets.FLY_API_TOKEN }}
-    needs: [ deploy-zookeeper ]

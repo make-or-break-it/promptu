@@ -6,7 +6,8 @@ on:
       - apps/post-producer/**
       - .github/**
     branches:
-    - eds/main
+      - main
+      - eds/main
 
 jobs:
   test-api:
@@ -21,4 +22,4 @@ jobs:
       component: apps/post-producer
     secrets:
       fly-api-token: ${{ secrets.FLY_API_TOKEN }}
-    needs: [ test-api ]
+    needs: [test-api]

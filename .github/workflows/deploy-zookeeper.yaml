@@ -6,7 +6,8 @@ on:
       - apps/zookeeper/**
       - .github/**
     branches:
-    - eds/main
+      - main
+      - eds/main
 
 jobs:
   deploy-zookeeper:

@@ -14,8 +14,8 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"promptu/apps/post-feeder/internal/handler"
-	"promptu/apps/post-feeder/internal/storage"
+	"promptu/apps/feeder-api/internal/handler"
+	"promptu/apps/feeder-api/internal/storage"
 )
 
 func main() {

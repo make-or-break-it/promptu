@@ -3,8 +3,8 @@ package storage
 import (
 	"context"
 	"fmt"
-	"promptu/apps/post-feeder/internal/config"
-	"promptu/apps/post-feeder/internal/model"
+	"promptu/apps/feeder-api/internal/config"
+	"promptu/apps/feeder-api/internal/model"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"

@@ -17,7 +17,7 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"promptu/apps/post-producer/internal/handler"
+	"promptu/apps/post-api/internal/handler"
 )
 
 var brokers, topic string

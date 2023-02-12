@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"promptu/apps/post-feeder/internal/storage"
+	"promptu/apps/feeder-api/internal/storage"
 )
 
 type Handler struct {

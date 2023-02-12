@@ -2,7 +2,7 @@ package storage
 
 import (
 	"context"
-	"promptu/apps/post-feeder/internal/model"
+	"promptu/apps/feeder-api/internal/model"
 	"time"
 )
 

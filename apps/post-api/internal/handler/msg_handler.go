@@ -8,7 +8,7 @@ import (
 
 	"github.com/Shopify/sarama"
 
-	"promptu/apps/post-producer/internal/model"
+	"promptu/apps/post-api/internal/model"
 )
 
 type Handler struct {

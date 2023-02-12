@@ -1,4 +1,4 @@
-module promptu/apps/post-producer
+module promptu/apps/post-api
 
 go 1.19
 

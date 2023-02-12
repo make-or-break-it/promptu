@@ -1,25 +1,24 @@
-name: deploy-api
+name: deploy-db-updater
 
 on:
   push:
     paths:
-      - apps/api/**
+      - apps/db-updater/**
       - .github/**
     branches:
-    - main
-    - mir/main
+    - eds/main
 
 jobs:
-  test-api:
-    name: Test API
+  test-app:
+    name: Test DB Updater
     uses: ./.github/workflows/reusable-test-go.yaml
     with:
-      component: apps/api
-  deploy-api:
-    name: Deploy API
+      component: apps/db-updater
+  deploy-app:
+    name: Deploy DB Updater
     uses: ./.github/workflows/reusable-deploy.yaml
     with:
-      component: apps/api
+      component: apps/db-updater
     secrets:
       fly-api-token: ${{ secrets.FLY_API_TOKEN }}
-    needs: [ test-api ]
+    needs: [ test-app ]

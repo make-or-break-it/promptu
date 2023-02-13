@@ -6,9 +6,9 @@ on:
       - apps/ui/**
       - .github/**
     branches:
-    - main
-    - mir/main
-    - eds/main
+      - main
+      - mir/main
+      - eds/main
 
 jobs:
   test-ui:
@@ -23,4 +23,4 @@ jobs:
       component: apps/ui
     secrets:
       fly-api-token: ${{ secrets.FLY_API_TOKEN }}
-    needs: [ test-ui ]
+    needs: [test-ui]

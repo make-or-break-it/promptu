@@ -1,0 +1,20 @@
+name: test-post-api
+
+on:
+  pull_request:
+    branches:
+      - main
+      - mir/main
+      - "release/**"
+      - "cicd/**"
+      - dev
+    paths:
+      - apps/post-api/**
+      - .github/**
+
+jobs:
+  test-api:
+    name: Test API
+    uses: ./.github/workflows/reusable-test-go.yaml
+    with:
+      component: apps/post-api

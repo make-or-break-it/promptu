@@ -9,7 +9,7 @@ var globalAppConfig *appConfig
 type appConfig struct {
 	MongoDbConnParams string `env:"PROMPTU_MONGODB_CONN_PARAMS" envDefault:"retryWrites=true&w=majority"`
 	MongoDbUrl        string `env:"PROMPTU_MONGODB_URL,required"`
-	KafkaBrokers      string `env:"KAFKA_BROKERS,required" envDefault:"kafka.fly.dev:9094"`
+	KafkaBrokers      string `env:"KAFKA_BROKERS,required" envDefault:"promptu-kafka-eds.fly.dev:9094"`
 	KafkaVersion      string `env:"KAFKA_VERSION,required" envDefault:"2.8.1"`
 	PostTopic         string `env:"POST_TOPIC,required" envDefault:"posts"`
 }

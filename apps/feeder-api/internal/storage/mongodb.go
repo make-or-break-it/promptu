@@ -3,13 +3,8 @@ package storage
 import (
 	"context"
 	"fmt"
-<<<<<<<< HEAD:apps/feeder-api/internal/storage/mongodb.go
 	"promptu/apps/feeder-api/internal/config"
 	"promptu/apps/feeder-api/internal/model"
-========
-	"promptu/apps/post-feeder/internal/config"
-	"promptu/apps/post-feeder/internal/model"
->>>>>>>> eds/main:apps/post-feeder/internal/storage/mongodb.go
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"

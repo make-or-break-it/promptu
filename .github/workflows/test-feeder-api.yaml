@@ -1,4 +1,4 @@
-name: test-api
+name: test-feeder-api
 
 on:
   pull_request:
@@ -9,7 +9,7 @@ on:
       - "cicd/**"
       - dev
     paths:
-      - apps/api/**
+      - apps/feeder-api/**
       - .github/**
 
 jobs:
@@ -17,4 +17,4 @@ jobs:
     name: Test API
     uses: ./.github/workflows/reusable-test-go.yaml
     with:
-      component: apps/api
+      component: apps/feeder-api

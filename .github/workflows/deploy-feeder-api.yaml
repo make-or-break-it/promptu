@@ -3,7 +3,7 @@ name: deploy-feeder-api
 on:
   push:
     paths:
-      - apps/post-feeder/**
+      - apps/feeder-api/**
       - .github/**
     branches:
       - main
@@ -14,12 +14,12 @@ jobs:
     name: Test Feeder API
     uses: ./.github/workflows/reusable-test-go.yaml
     with:
-      component: apps/post-feeder
+      component: apps/feeder-api
   deploy-api:
     name: Deploy Feeder API
     uses: ./.github/workflows/reusable-deploy.yaml
     with:
-      component: apps/post-feeder
+      component: apps/feeder-api
     secrets:
       fly-api-token: ${{ secrets.FLY_API_TOKEN }}
     needs: [test-api]

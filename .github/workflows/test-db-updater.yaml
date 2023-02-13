@@ -1,0 +1,20 @@
+name: test-db-updater
+
+on:
+  pull_request:
+    branches:
+      - main
+      - mir/main
+      - "release/**"
+      - "cicd/**"
+      - dev
+    paths:
+      - apps/db-updater/**
+      - .github/**
+
+jobs:
+  test-api:
+    name: Test API
+    uses: ./.github/workflows/reusable-test-go.yaml
+    with:
+      component: apps/db-updater

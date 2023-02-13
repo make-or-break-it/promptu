@@ -29,13 +29,13 @@ func main() {
 				Name:        "brokers",
 				Usage:       "The address of the kafka brokers",
 				Destination: &brokers,
-				Value:       "kafka.fly.dev:9094",
+				Value:       os.Getenv("KAFKA_HOST"),
 			},
 			&cli.StringFlag{
 				Name:        "topic",
 				Usage:       "The name of the topic that the producer sends messages to",
 				Destination: &topic,
-				Value:       "posts",
+				Value:       os.Getenv("KAFKA_TOPIC"),
 			},
 		},
 		Action: func(c *cli.Context) error {

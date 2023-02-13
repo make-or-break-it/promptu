@@ -1,4 +1,4 @@
-app = "feeder-api"
+app = "promptu-feeder-api-eds"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []

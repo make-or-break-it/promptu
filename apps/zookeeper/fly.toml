@@ -1,4 +1,4 @@
-app = "zookeeper"
+app = "promptu-zookeeper-eds"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []

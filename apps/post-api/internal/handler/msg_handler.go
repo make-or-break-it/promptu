@@ -58,7 +58,7 @@ func (h *Handler) PostMessage(w http.ResponseWriter, r *http.Request) {
 	})
 
 	if err != nil {
-		writeError(w, fmt.Errorf("couldn't save message! %s)", err.Error()).Error(), http.StatusInternalServerError)
+		writeError(w, fmt.Errorf("couldn't save message! %s", err.Error()).Error(), http.StatusInternalServerError)
 		return
 	}
 

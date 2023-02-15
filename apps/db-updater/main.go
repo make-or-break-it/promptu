@@ -30,7 +30,7 @@ func main() {
 			cfg := config.AppConfig() // todo change
 
 			store := storage.NewMongoDbStore("promptu-db")
-			consumer, err := sarama.NewConsumerGroup(strings.Split(cfg.KafkaBrokers, ","), "post-producer", createConsumerGroupConfig(cfg.KafkaVersion))
+			consumer, err := sarama.NewConsumerGroup(strings.Split(cfg.KafkaBrokers, ","), "db-updater-cg", createConsumerGroupConfig(cfg.KafkaVersion))
 			if err != nil {
 				log.Panicf("Error creating consumer group client: %v", err)
 			}

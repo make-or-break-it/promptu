@@ -7,5 +7,5 @@ resource "fly_volume" "kafka" {
 
 resource "fly_ip" "kafka-ip" {
   app  = fly_app.promptu-kafka.name
-  type = "v6"
+  type = "v4"
 }

@@ -7,5 +7,5 @@ resource "fly_volume" "zookeeper" {
 
 resource "fly_ip" "zookeeper-ip" {
   app  = fly_app.promptu-zookeeper.name
-  type = "v6"
+  type = "v4"
 }

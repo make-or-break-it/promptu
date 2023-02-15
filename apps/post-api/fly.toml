@@ -5,7 +5,7 @@ processes = []
 
 [env]
   KAFKA_HOST="promptu-kafka-eds.fly.dev:9094"
-  KAFKA_TOPIC="post"
+  KAFKA_TOPIC="posts"
 
 [experimental]
   allowed_public_ports = []

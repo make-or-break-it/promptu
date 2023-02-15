@@ -52,13 +52,13 @@ func (h *Handler) PostMessage(w http.ResponseWriter, r *http.Request) {
 	post.UtcCreatedAt = time.Now()
 	_, _, err := h.producer.SendMessage(&sarama.ProducerMessage{
 		Topic:     h.topic,
-		Key:       nil, // if left empty the messages will be distributed equally between partitions
+		Key:       sarama.StringEncoder(post.User), // if left empty the messages will be distributed equally between partitions
 		Value:     &post,
 		Timestamp: post.UtcCreatedAt,
 	})
 
 	if err != nil {
-		writeError(w, fmt.Errorf("couldn't save message! %s)", err.Error()).Error(), http.StatusInternalServerError)
+		writeError(w, fmt.Errorf("couldn't save message! %s", err.Error()).Error(), http.StatusInternalServerError)
 		return
 	}
 

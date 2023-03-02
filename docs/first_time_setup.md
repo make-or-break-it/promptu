@@ -43,7 +43,7 @@ If you've forked Promptu and want to get its end-to-end workflow running, here's
    ```
 
 4. **Scale Kafka memory**
-   1. Our application will need at least 2048MB (or 2GB) of memory to run. Before you run your Github workflows to deploy your applications for the first time, you have to run the following command to scale it's memory:
+   1. The default application memory in fly.io is 256MB, but our application needs more memory to run. To ensure it has plenty of head room, we've choosen to give it 2048MB (or 2GB). Before you run your Github workflows to deploy your applications for the first time, you have to run the following command to scale its memory:
    ```sh
    cd apps/kafka
    flyctl scale memory -a promptu-kafka-eds 2048
@@ -55,7 +55,7 @@ If you've forked Promptu and want to get its end-to-end workflow running, here's
 6. **Raise your first PR and merge it into `main` to build your infrastructure and deploy your apps** - now that all the scaffolding has been set up, it's time to add some bricks! Merging your first PR will deploy your application to fly.io for the first time! All subsequent PRs will not only deploy the latest changes to fly.io, but it will also update your infrastructure through Terraform Cloud. But we're not done yet - we still need to secure access to our DB!
 7. **Secure your promptu-api to MongoDB Atlas**
    1. Right now, your DB can be accessed by anyone in the world! We need to restrict this so only our fly.io can communicate with it. Find out the public IP address for the applications `feeder-api` and `db-updater` by using `flyctl ssh issue` to issue an SSH key for your fly.io aap (entering `/home/vscode/.ssh/promptu-feeder-api-fly-io` and `/home/vscode/.ssh/promptu-db-updater-fly-io` respectively as your path to store the keys if you're in a devcontainer - otherwise, you have to supply the absolute path of your `~/.ssh` directory, followed by any prefix name you want e.g. `promptu-api-fly-io`) and then run `flyctl ssh console` from within the `apps/api` directory
-   2. Once inside, run the following commands in order to install `dig` and to find out your app's public IP address - record this IP address
+   2. Once inside, run the following commands in order to install `dig` and to find out your app's public IP address - record this IP address (_NOTE:_ This step needs to be done because the IP address in the fly.io UI is private and not recognised by Mongo. So we have to get the correct IP using this step):
    ```sh
    apt update
    apt install -y dnsutils

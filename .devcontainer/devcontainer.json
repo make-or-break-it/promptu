@@ -25,13 +25,11 @@
 		"ghcr.io/devcontainers/features/node:1": {
 			"version": "latest"
 		},
-		"ghcr.io/devcontainers-contrib/features/mongosh-homebrew:1": {
-			"version": "latest"
-		},
 		"ghcr.io/dhoeric/features/flyctl:1": {
 			"version": "latest"
 		}
 	},
+	"onCreateCommand": "./scripts/on_create_commands.sh",
 	"customizations": {
 		"vscode": {
 			"extensions": [

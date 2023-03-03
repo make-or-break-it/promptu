@@ -31,15 +31,15 @@ If you've forked Promptu and want to get its end-to-end workflow running, here's
    6. Once your plan has been successfully applied, you need to ensure you have the right connection details for your application to be deployed successfully for the first time - in your MongoDB Atlas `promptu` project, go to _Security > Database Access_ and edit the `promptu` user. Edit the `promptu` user's password and autogenerate a secure password - copy the value and keep it safe!
    7. In your MongoDB Atlas `promptu` project, go to _Deployment > Database_ and click on _Connect_ on your `promptu-db`. Select _Connect your application_ and copy the connection string up until (but not including!) the URL path and query strings. So if you're connection string looks like `mongodb+srv://promptu:<password>@promptu-db.p4jpncm.mongodb.net/?retryWrites=true&w=majority`, you only need `mongodb+srv://promptu:<password>@promptu-db.p4jpncm.mongodb.net`.
    8. Replace `<password>` in the connection string from `3.7.` with the value secured from `3.6.` - keep this value secure!
-   9. Use the `flyctl` CLI tool to create a `PROMPTU_MONGODB_URL` secret with your MongoDB connection URL from `3.8.` with the following script- you have to be in the same directory as the API `fly.toml` (**note:** make sure you're running this from a safe environment or from within a script, as your secret will be preserved within your shell history if run directly in your shell environment):
-   ```sh
-   cd apps/api
-   flyctl secrets set --detach PROMPTU_MONGODB_URL="<secure value from 3.8.>"
-   ```
 4. **Prepare Github Workflow**
    1. In your forked Github repo, go to _Settings > Security > Secrets > Actions_ and create the following repository secrets:
       - (**Sensitive**) `FLY_API_TOKEN` (value secured from step `2.4.`)
    2. Update your `fly.toml` files to include the suffix you provided in step `3.4` (if you chose `paper_mache` as your suffix, then your app name will be `promptu-paper_mache` for the `ui` component and `promptu-api-paper_mache` for the `api` component)
+   3. Use the `flyctl` CLI tool to create a `PROMPTU_MONGODB_URL` secret with your MongoDB connection URL from `3.8.` with the following script- you have to be in the same directory as the API `fly.toml` (**note:** make sure you're running this from a safe environment or from within a script, as your secret will be preserved within your shell history if run directly in your shell environment):
+   ```sh
+   cd apps/api
+   flyctl secrets set --detach PROMPTU_MONGODB_URL="<secure value from 3.8.>"
+   ```
 5. **Raise your first PR and merge it into `main` to build your infrastructure and deploy your apps** - now that all the scaffolding has been set up, it's time to add some bricks! Merging your first PR will deploy your application to fly.io for the first time! All subsequent PRs will not only deploy the latest changes to fly.io, but it will also update your infrastructure through Terraform Cloud. But we're not done yet - we still need to secure access to our DB!
 6. **Secure your promptu-api to MongoDB Atlas**
    1. Right now, your DB can be accessed by anyone in the world! We need to restrict this so only our fly.io can communicate with it. Find out your `promptu-api` public IP address by using `flyctl ssh issue` to issue an SSH key for your fly.io aap (entering `/home/vscode/.ssh/promptu-api-fly-io` as your path to store the keys if you're in a devcontainer - otherwise, you have to supply the absolute path of your `~/.ssh` directory, followed by any prefix name you want e.g. `promptu-api-fly-io`) and then run `flyctl ssh console` from within the `apps/api` directory

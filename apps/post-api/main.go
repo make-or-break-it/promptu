@@ -16,11 +16,17 @@ import (
 	cli "github.com/urfave/cli/v2"
 
 	"github.com/gorilla/mux"
+	"go.uber.org/zap"
 
-	"promptu/apps/post-api/internal/handler"
+	hndlr "promptu/apps/post-api/internal/handler"
 )
 
 var brokers, topic string
+
+const (
+	defaultPort = "8080"
+	defaultHost = "0.0.0.0"
+)
 
 func main() {
 	app := &cli.App{
@@ -49,11 +55,25 @@ func main() {
 			// 	return err
 			// }
 
-			producer, err := handler.NewSyncProducer(brokerList)
+			logger, err := zap.NewProduction()
 			if err != nil {
 				return err
 			}
-			return runHTTPServer(context.Background(), producer)
+			defer logger.Sync() // flushes buffer, if any
+			sugarLogger := logger.Sugar()
+
+			producer, err := hndlr.NewSyncProducer(brokerList)
+			if err != nil {
+				return err
+			}
+			handler := hndlr.NewSyncHandler(producer, topic, sugarLogger)
+
+			// aProducer, err := hndlr.NewAsyncProducer(brokerList)
+			// if err != nil {
+			// 	return err
+			// }
+			// handler := hndlr.NewAsyncHandler(aProducer, topic, sugarLogger)
+			return runHTTPServer(context.Background(), handler, sugarLogger)
 		},
 	}
 
@@ -62,9 +82,8 @@ func main() {
 	}
 }
 
-func runHTTPServer(ctx context.Context, producer sarama.SyncProducer) error {
-
-	r, err := createRouter(producer)
+func runHTTPServer(ctx context.Context, handler handler, logger *zap.SugaredLogger) error {
+	r, err := createRouter(handler, logger)
 	if err != nil {
 		return err
 	}
@@ -92,31 +111,32 @@ func runHTTPServer(ctx context.Context, producer sarama.SyncProducer) error {
 	case <-sigChan:
 		return errors.New("shutting down due to received signal")
 	case err := <-errCh:
-		if err := producer.Close(); err != nil {
-			log.Println("Failed to shut down access log producer cleanly", err)
+		if err := handler.Close(); err != nil {
+			log.Println("Failed to shut down producer cleanly", err)
 		}
 		return err
 	}
 }
 
 func getAddress() string {
-	var host, port string
-	var exists bool
+	var (
+		host, port string
+		exists     bool
+	)
 
 	host, exists = os.LookupEnv("HOST")
 	if !exists {
-		host = "0.0.0.0"
+		host = defaultHost
 	}
 
 	port, exists = os.LookupEnv("PORT")
 	if !exists {
-		port = "8080"
+		port = defaultPort
 	}
 	return host + ":" + port
 }
 
-func createRouter(producer sarama.SyncProducer) (*mux.Router, error) {
-	hndlr := handler.NewHandler(producer, topic)
+func createRouter(hndlr handler, logger *zap.SugaredLogger) (*mux.Router, error) {
 	r := mux.NewRouter()
 	r.HandleFunc("/post", hndlr.PostMessage).Methods(http.MethodPost, http.MethodOptions)
 	r.HandleFunc("/health", hndlr.Health).Methods(http.MethodGet, http.MethodOptions)
@@ -131,6 +151,12 @@ func middleware(h http.Handler) http.Handler {
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		h.ServeHTTP(w, r)
 	})
+}
+
+type handler interface {
+	Health(w http.ResponseWriter, r *http.Request)
+	PostMessage(w http.ResponseWriter, r *http.Request)
+	Close() error
 }
 
 func ensureTopicExists(brokers []string, topic string) error {

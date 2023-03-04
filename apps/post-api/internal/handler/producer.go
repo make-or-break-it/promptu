@@ -78,5 +78,14 @@ func NewAsyncProducer(brokerList []string) (sarama.AsyncProducer, error) {
 		}
 	}()
 
+	// We will just log to STDOUT the successful messages
+	go func() {
+		for msg := range producer.Successes() {
+			// In a production application we would want to make some changes to this code:
+			// this goroutine will "hang in the air", and won't be correctly synchronised with the other goroutines, in case of failure we might loose the logs
+			fmt.Printf("New message writtern in topic %s at partition %d and offetse %d\n", msg.Topic, msg.Partition, msg.Offset)
+		}
+	}()
+
 	return producer, nil
 }

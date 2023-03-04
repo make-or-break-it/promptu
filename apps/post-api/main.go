@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+
 	"net/http"
 	"os"
 	"os/signal"
@@ -29,6 +30,13 @@ const (
 )
 
 func main() {
+	logger, err := zap.NewProduction()
+	if err != nil {
+		log.Fatalf("error while iniatilising logger %v", err)
+	}
+	defer logger.Sync() // flushes buffer, if any
+	sugarLogger := logger.Sugar()
+
 	app := &cli.App{
 		Flags: []cli.Flag{
 			&cli.StringFlag{
@@ -47,20 +55,10 @@ func main() {
 		Action: func(c *cli.Context) error {
 			brokerList := strings.Split(brokers, ",")
 
-			// TODO uncomment and create topics with specific config if missing
-			// instead of defaults
-
-			// err := ensureTopicExists(brokerList, topic)
-			// if err != nil {
-			// 	return err
-			// }
-
-			logger, err := zap.NewProduction()
+			err = ensureTopicExists(sugarLogger, brokerList, topic)
 			if err != nil {
 				return err
 			}
-			defer logger.Sync() // flushes buffer, if any
-			sugarLogger := logger.Sugar()
 
 			producer, err := hndlr.NewSyncProducer(brokerList)
 			if err != nil {
@@ -78,7 +76,7 @@ func main() {
 	}
 
 	if err := app.Run(os.Args); err != nil {
-		log.Fatalf("run failed: %s", err.Error())
+		sugarLogger.Fatalf("run failed: %s", err.Error())
 	}
 }
 
@@ -90,7 +88,7 @@ func runHTTPServer(ctx context.Context, handler handler, logger *zap.SugaredLogg
 
 	errCh := make(chan error, 1)
 
-	log.Print("Starting the server on port 8080")
+	logger.Info("Starting the server on port 8080")
 	srv := &http.Server{
 		Addr:         getAddress(),
 		WriteTimeout: time.Second * 15,
@@ -98,23 +96,25 @@ func runHTTPServer(ctx context.Context, handler handler, logger *zap.SugaredLogg
 		IdleTimeout:  time.Second * 60,
 		Handler:      middleware(r),
 	}
+	defer srv.Shutdown(ctx)
+
 	go func() {
 		if err := srv.ListenAndServe(); err != nil {
 			errCh <- err
 		}
 	}()
-	defer srv.Shutdown(ctx)
 
 	sigChan := make(chan os.Signal, 1)
-	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
+	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
+
 	select {
 	case <-sigChan:
 		return errors.New("shutting down due to received signal")
 	case err := <-errCh:
 		if err := handler.Close(); err != nil {
-			log.Println("Failed to shut down producer cleanly", err)
+			logger.Infof("failed to shut down producer cleanly %v", err)
 		}
-		return err
+		return fmt.Errorf("errors received on channel %v", err)
 	}
 }
 
@@ -159,7 +159,7 @@ type handler interface {
 	Close() error
 }
 
-func ensureTopicExists(brokers []string, topic string) error {
+func ensureTopicExists(logger *zap.SugaredLogger, brokers []string, topic string) error {
 	// create topic if doesn't exist
 	cfg := sarama.NewConfig()
 	var err error
@@ -170,16 +170,17 @@ func ensureTopicExists(brokers []string, topic string) error {
 	cl, err := sarama.NewClient(brokers, cfg)
 	cr, err := cl.Controller()
 	defer cr.Close()
-	response, err := cr.CreateTopics(createTopic(topic))
-	fmt.Printf("response: %v, error: %v \n", response, err)
 
+	response, err := cr.CreateTopics(createTopic(logger, topic))
 	if err != nil {
-		return err
+		return fmt.Errorf("topic creation failed with %w", err)
 	}
+
+	logger.Infof("topic creation response: %v \n", response)
 	return nil
 }
 
-func createTopic(topic string) *sarama.CreateTopicsRequest {
+func createTopic(logger *zap.SugaredLogger, topic string) *sarama.CreateTopicsRequest {
 	retention := "-1"
 	req := &sarama.CreateTopicsRequest{
 		TopicDetails: map[string]*sarama.TopicDetail{

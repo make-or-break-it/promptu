@@ -160,9 +160,9 @@ func createTopic(topic string) *sarama.CreateTopicsRequest {
 			topic: {
 				NumPartitions:     10,
 				ReplicationFactor: 1,
-				// ReplicaAssignment: map[int32][]int32{
-				// 	0: {0, 1, 2},
-				// },
+				ReplicaAssignment: map[int32][]int32{
+					0: {0},
+				},
 				ConfigEntries: map[string]*string{
 					"retention.ms": &retention,
 				},

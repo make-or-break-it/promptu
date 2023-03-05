@@ -11,9 +11,11 @@ processes = []
   KAFKA_INTER_BROKER_LISTENER_NAME="INSIDE"
   KAFKA_HEAP_OPTS="-Xmx1024M -Xms1024M"
   KAFKA_CREATE_TOPICS="posts:10:1:compact"
+  KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR="1"
+  KAFKA_DELETE_TOPIC_ENABLE="true"
 
 [build]
-  image = "wurstmeister/kafka:latest"
+  image = "confluentinc/cp-kafka:7.3.2"
 
 [mounts]
   destination = "/data"

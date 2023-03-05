@@ -45,7 +45,7 @@ If you've forked Promptu and want to get its end-to-end workflow running, here's
 5. **Raise your first PR and merge it into `main` to build your infrastructure and deploy your apps** - now that all the scaffolding has been set up, it's time to add some bricks! Merging your first PR will deploy your application to fly.io for the first time! All subsequent PRs will not only deploy the latest changes to fly.io, but it will also update your infrastructure through Terraform Cloud. But we're not done yet - we still need to secure access to our DB!
 6. **Secure your promptu-api to MongoDB Atlas**
    1. Right now, your DB can be accessed by anyone in the world! We need to restrict this so only our fly.io can communicate with it. Find out your `promptu-api` public IP address by using `flyctl ssh issue` to issue an SSH key for your fly.io aap (entering `/home/vscode/.ssh/promptu-api-fly-io` as your path to store the keys if you're in a devcontainer - otherwise, you have to supply the absolute path of your `~/.ssh` directory, followed by any prefix name you want e.g. `promptu-api-fly-io`) and then run `flyctl ssh console` from within the `apps/api` directory
-   2. Once inside, run the following commands in order to install `dig` and to find out your app's public IP address - record this IP address
+   2. Once inside, run the following commands in order to install `dig` and to find out your app's public IP address - record this IP address (**NOTE:** this step needs to be done because the IP address in the fly.io UI is private and not recognised by Mongo. So we have to get the correct IP using this step):
    ```sh
    apt update
    apt install -y dnsutils

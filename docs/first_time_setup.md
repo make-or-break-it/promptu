@@ -36,7 +36,7 @@ If you've forked Promptu and want to get its end-to-end workflow running, here's
    1. In your forked Github repo, go to _Settings > Security > Secrets > Actions_ and create the following repository secrets:
       - (**Sensitive**) `FLY_API_TOKEN` (value secured from step `2.4.`)
    2. Update your `fly.toml` files to include the suffix you provided in step `3.4` (if you chose `paper_mache` as your suffix, then your app name will be `promptu-paper_mache` for the `ui` component and `promptu-api-paper_mache` for the `api` component)
-   3. Use the `flyctl` CLI tool to create a `PROMPTU_MONGODB_URL` secret with your MongoDB connection URL from `3.8.` with the following script- you have to be in the same directory as the API `fly.toml` (**note:** make sure you're running this from a safe environment or from within a script, as your secret will be preserved within your shell history if run directly in your shell environment):
+   3. Use the `flyctl` CLI tool to create a `PROMPTU_MONGODB_URL` secret with your MongoDB connection URL from `3.8.` with the following script - you have to be in the same directory as the API `fly.toml` (**NOTE:** make sure you're running this from a safe environment or from within a script, as your secret will be preserved within your shell history if run directly in your shell environment):
    ```sh
    cd apps/api
    flyctl secrets set --detach PROMPTU_MONGODB_URL="<secure value from 3.8.>"

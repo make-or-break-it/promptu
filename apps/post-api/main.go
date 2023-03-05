@@ -181,23 +181,52 @@ func ensureTopicExists(logger *zap.SugaredLogger, brokers []string, topic string
 }
 
 func createTopic(logger *zap.SugaredLogger, topic string) *sarama.CreateTopicsRequest {
-	retention := "-1"
+	topicCleanUpPolicy := "delete"
+	retentionMS := "-1"
+	tenMB := "10485760"
+	compressionMethod := "snappy"
+
 	req := &sarama.CreateTopicsRequest{
 		TopicDetails: map[string]*sarama.TopicDetail{
 			topic: {
 				NumPartitions:     10,
 				ReplicationFactor: 1,
-				ReplicaAssignment: map[int32][]int32{
-					0: {0},
-				},
-				ConfigEntries: map[string]*string{
-					"retention.ms": &retention,
+				// ReplicaAssignment: map[int32][]int32{
+				// 	0: {0, 1, 2},
+				// }, - can't be both ReplicationFactor & ReplicaAssignment specified at the same time
+
+				ConfigEntries: map[string]*string{ // topic properties following kafka doc
+					"cleanup.policy": &topicCleanUpPolicy, // default: "delete'
+					// "delete": discards old segments when their retention time or size limit has been reached
+					// "compact": enables log compaction, which retains the latest value for each key
+					// can apply both
+
+					"retention.ms": &retentionMS, // default: 604800000=7days
+					// maximum time we will retain a log before discarding old log segments to free up space
+					// if we are using the "delete" retention policy.
+
+					//"retention.bytes": ,// default: -1
+					// controls the maximum size a partition (which consists of log segments) can grow to before we discard old log segments to free up space
+					// if we are using the "delete" retention policy
+					// By default there is no size limit only a time limit.
+					// Since this limit is enforced at the partition level, multiply it by the number of partitions to compute the topic retention in bytes.
+
+					// "segment.bytes": ,// default: 1 GB - controls the segment file size for the log.
+					// Retention and cleaning is always done a file at a time so a larger segment size means fewer files
+					// but less granular control over retention.
+
+					"max.message.bytes": &tenMB, // default: 1048588 ~ 1MB
+
+					"compression.type": &compressionMethod, //default: uncompressed
+
+					// min.insync.replicas - creating a topic with a replication factor of 3 & min.insync.replicas to 2 & produce with acks of "all"
+					// => ensures that the producer raises an exception if a majority of replicas do not receive a write
 				},
 			},
 		},
 		Timeout: 100 * time.Millisecond,
 	}
 	req.Version = 1
-	req.ValidateOnly = true
+	//req.ValidateOnly = true
 	return req
 }

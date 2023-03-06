@@ -57,6 +57,8 @@ If you've forked Promptu and want to get its end-to-end workflow running, here's
    3. Modify the IP address you retrieved from step `6.2.` so that the last octet is 0 and it has a 24 bit subnet mask. So for example, if your IP address is `1.2.3.4`, then it should look like `1.2.3.0/24`
    4. Save the value from `6.3.` into Terraform Cloud as a Terraform variable called `promptu_api_cidr_range`, then perform a new run - this should whitelist only your app's IP address to MongoDB Atlas
 
-And you're all set! You should now be able to connect to your application from through its fly.io domain name! 🚀
+7. **Accessing the Promptu app** - you're all set! You should now be able to connect to your application from through its fly.io domain name! 🚀
+   1. Go to your app on Fly.io Dashboard for the `ui` component - `https://fly.io/apps/promptu-<your-suffix>` - suffix from step `4.2.`
+   2. Find your app's URL via _Overview > Application Information > Hostname_ - it will likely be `https://promptu-<your-suffix>.fly.dev/`
 
 Rest assured, most of this setup only ever happens once when you create your application. From here on out, all of your changes will be automatically applied on merge based on the settings in your `.github/workflows` config.

@@ -1,0 +1,3 @@
+provider "fly" {}
+
+provider "mongodbatlas" {}

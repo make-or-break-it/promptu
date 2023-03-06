@@ -15,8 +15,9 @@ If you've forked Promptu and want to get its end-to-end workflow running, here's
    2. Create an organisation for Promptu (this can have any name - example: `promptu`)
    3. Create an access token for Terraform Cloud (this can have any name - example: `promptu-terraform-cloud`) - this key will be used by Terraform to manage your fly.io account, so make sure to keep it safe for now! You'll use this later.
    4. Create an access token for your Github Workflow (this can have any name - example: `promptu-github-workflow`) - this key will be used by Terraform to manage your fly.io account, so make sure to keep it safe for now! You'll use this later.
-   5. _(OPTIONAL)_ If more than 2 applications are needed to be deployed, you will need to attach a card to your account. You will only be charged for the CPU used and the up time of the applications, which you can destroy at any time with Terraform (**tip:** use a virtual credit card, like ones provided by Revolut, to make it easier to track payments and control funds for the account)
+   5. In order to deploy, you will need to attach a card to your account. You will only be charged for the CPU/memory used and the up time of the applications, which you can destroy at any time with Terraform (**tip:** use a virtual credit card, like ones provided by Revolut, to make it easier to track payments and control funds for the account). The setup described by this doc should not cost you anything at time of writing.
 3. **Setup Terraform Cloud (free)**
+
    1. Create an account in [Terraform Cloud](https://cloud.hashicorp.com/products/terraform)
    2. Create a new workspace for Promptu (choose the _Version control workflow_)
    3. In _Configure settings_, go to _Advanced options_ and set your _Terraform Working Directory_ to `infrastructure`
@@ -33,10 +34,12 @@ If you've forked Promptu and want to get its end-to-end workflow running, here's
    8. Replace `<password>` in the connection string from `3.7.` with the value secured from `3.6.` - keep this value secure!
 
 4. **Prepare Github Workflow**
+
    1. In your forked Github repo, go to _Settings > Security > Secrets > Actions_ and create the following repository secrets:
       - (**Sensitive**) `FLY_API_TOKEN` (value secured from step `2.4.`)
    2. Update your `fly.toml` files to include the suffix you provided in step `3.4` (if you chose `paper_mache` as your suffix, then your app name will be `promptu-paper_mache` for the `ui` component and `promptu-api-paper_mache` for the `api` component)
    3. Use the `flyctl` CLI tool to create a `PROMPTU_MONGODB_URL` secret with your MongoDB connection URL from `3.8.` with the following script - you have to be in the same directory as the API `fly.toml` (**NOTE:** make sure you're running this from a safe environment or from within a script, as your secret will be preserved within your shell history if run directly in your shell environment):
+
    ```sh
    cd apps/api
    flyctl secrets set --detach PROMPTU_MONGODB_URL="<secure value from 3.8.>"

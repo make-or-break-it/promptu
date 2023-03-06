@@ -15,7 +15,7 @@ If you've forked Promptu and want to get its end-to-end workflow running, here's
    2. Create an organisation for Promptu (this can have any name - example: `promptu`)
    3. Create an access token for Terraform Cloud (this can have any name - example: `promptu-terraform-cloud`) - this key will be used by Terraform to manage your fly.io account, so make sure to keep it safe for now! You'll use this later.
    4. Create an access token for your Github Workflow (this can have any name - example: `promptu-github-workflow`) - this key will be used by Terraform to manage your fly.io account, so make sure to keep it safe for now! You'll use this later.
-   5. _(OPTIONAL)_ If more than 2 applications are needed to be deployed, you will need to attach a card to your account. You will only be charged for the CPU used and the up time of the applications, which you can destroy at any time with Terraform (**tip:** use a virtual credit card, like ones provided by Revolut, to make it easier to track payments and control funds for the account)
+   5. You will need to attach a card to your account. You will only be charged for the CPU/memory used and the up time of the applications, which you can destroy at any time with Terraform (**tip:** use a virtual credit card, like ones provided by Revolut, to make it easier to track payments and control funds for the account). This setup described by this doc should not cost you more than $6 a month at the time of writing.
 3. **Setup Terraform Cloud (free)**
 
    1. Create an account in [Terraform Cloud](https://cloud.hashicorp.com/products/terraform)
@@ -40,6 +40,7 @@ If you've forked Promptu and want to get its end-to-end workflow running, here's
    flyctl scale memory -a promptu-kafka-eds 2048
    ```
 5. **Prepare Github Workflow**
+
    1. In your forked Github repo, go to _Settings > Security > Secrets > Actions_ and create the following repository secrets:
       - (**Sensitive**) `FLY_API_TOKEN` (value secured from step `2.4.`)
    2. Update your `fly.toml` files to include the suffix you provided in step `3.4` (if you chose `paper_mache` as your suffix, then your app name will be `promptu-paper_mache` for the `ui` component and `promptu-api-paper_mache` for the `api` component)
@@ -52,6 +53,7 @@ If you've forked Promptu and want to get its end-to-end workflow running, here's
    cd ../../apps/db-updater
    flyctl secrets set --detach PROMPTU_MONGODB_URL="<secure value from 3.8. for the promptu-db-updater user>"
    ```
+
 6. **Raise your first PR and merge it into `main` to build your infrastructure and deploy your apps** - now that all the scaffolding has been set up, it's time to add some bricks! Merging your first PR will deploy your application to fly.io for the first time! All subsequent PRs will not only deploy the latest changes to fly.io, but it will also update your infrastructure through Terraform Cloud. But we're not done yet - we still need to secure access to our DB!
 7. **Secure your promptu-api to MongoDB Atlas**
    1. Right now, your DB can be accessed by anyone in the world! We need to restrict this so only our fly.io can communicate with it. Find out the public IP address for the applications `feeder-api` and `db-updater` by using `flyctl ssh issue` to issue an SSH key for your fly.io aap (entering `/home/vscode/.ssh/promptu-feeder-api-fly-io` and `/home/vscode/.ssh/promptu-db-updater-fly-io` respectively as your path to store the keys if you're in a devcontainer - otherwise, you have to supply the absolute path of your `~/.ssh` directory, followed by any prefix name you want e.g. `promptu-api-fly-io`) and then run `flyctl ssh console` from within the `apps/api` directory

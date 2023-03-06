@@ -30,28 +30,25 @@ If you've forked Promptu and want to get its end-to-end workflow running, here's
       - (Terraform Variable) `promptu_fly_io_name_suffix` (application name suffix to make your version of Promptu app globally unique - the name will become `promptu-${promptu_fly_io_name_suffix}` in fly.io)
    5. After all your config variables have been supplied, you can create an initial run to create the base resources necessary to run your deployments - you can do this through the Terraform UI by going to _Runs > Actions > Start new run_. Once you're happy with the plan, you can apply!
    6. Once your plan has been successfully applied, you need to ensure you have the right connection details for your application to be deployed successfully for the first time - in your MongoDB Atlas `promptu` project, go to _Security > Database Access_ and edit the `promptu-feeder` and `promptu-db-updater` users. Edit each users' password and autogenerate a secure password - copy the value and keep it safe!
-   7. In your MongoDB Atlas `promptu` project, go to _Deployment > Database_ and click on _Connect_ on your `promptu-db`. Select _Connect your application_ and copy the connection string up until (but not including!) the URL path and query strings. So if you're connection string looks like `mongodb+srv://promptu:<password>@promptu-db.p4jpncm.mongodb.net/?retryWrites=true&w=majority`, you only need `mongodb+srv://promptu:<password>@promptu-db.p4jpncm.mongodb.net`.
-   8. Replace `<password>` in the connection string from `3.7.` with the value secured from `3.6.` - keep this value secure!
+   7. In your MongoDB Atlas `promptu` project, go to _Deployment > Database_ and click on _Connect_ on your `promptu-db`. Select _Connect your application_ and copy the host name in the connection string. So if you're connection string looks like `mongodb+srv://<username>:<password>@promptu-db.p4jpncm.mongodb.net/?retryWrites=true&w=majority`, you only need `promptu-db.p4jpncm.mongodb.net`
 
-4. **Scale Kafka memory**
-   1. The default application memory in fly.io is 256MB, but our application needs more memory to run. To ensure it has plenty of head room, we've choosen to give it 2048MB (or 2GB). Before you run your Github workflows to deploy your applications for the first time, you have to run the following command to scale its memory:
+4. **Scale Kafka and Zookeeper memory**
+   1. The default application memory in fly.io is 256MB, but our Kafka and Zookeeper needs more memory to run. To ensure it has plenty of head room, we've choosen to give them 2048MB (or 2GB) and 1024MB (or 1GB) respectively. Before you run your Github workflows to deploy your applications for the first time, you have to run the following command to scale its memory:
    ```sh
-   cd apps/kafka
+   # Select 'yes' when the prompt asks you to continue despite the app name being different
    flyctl scale memory -a promptu-kafka-eds 2048
+   flyctl scale memory -a promptu-zookeeper-eds 1024
    ```
 5. **Prepare Github Workflow**
 
    1. In your forked Github repo, go to _Settings > Security > Secrets > Actions_ and create the following repository secrets:
       - (**Sensitive**) `FLY_API_TOKEN` (value secured from step `2.4.`)
    2. Update your `fly.toml` files to include the suffix you provided in step `3.4` (if you chose `paper_mache` as your suffix, then your app name will be `promptu-paper_mache` for the `ui` component and `promptu-api-paper_mache` for the `api` component)
-   3. Use the `flyctl` CLI tool to create a `PROMPTU_MONGODB_URL` secret with your MongoDB connection URL from `3.8.` with the following script - you have to be in the same directory as the each service's `fly.toml` (**NOTE:** make sure you're running this from a safe environment or from within a script, as your secret will be preserved within your shell history if run directly in your shell environment):
+   3. Use the `flyctl` CLI tool to create a `PROMPTU_MONGODB_URL` secret with your MongoDB connection URL from `3.8.` with the following script (**NOTE:** make sure you're running this from a safe environment or from within a script, as your secret will be preserved within your shell history if run directly in your shell environment):
 
    ```sh
-   cd apps/feeder-api
-   flyctl secrets set --detach PROMPTU_MONGODB_URL="<secure value from 3.8. for the promptu-feeder user>"
-
-   cd ../../apps/db-updater
-   flyctl secrets set --detach PROMPTU_MONGODB_URL="<secure value from 3.8. for the promptu-db-updater user>"
+   flyctl secrets set -a promptu-feeder-api-eds --detach PROMPTU_MONGODB_URL="mongodb+srv://promptu-feeder:<password from section 3.6>@<hostname from section 3.8>"
+   flyctl secrets set -a promptu-db-updater-eds --detach PROMPTU_MONGODB_URL="mongodb+srv://promptu-db-updater:<password from section 3.6>@<hostname from section 3.8>"
    ```
 
 6. **Raise your first PR and merge it into `main` to build your infrastructure and deploy your apps** - now that all the scaffolding has been set up, it's time to add some bricks! Merging your first PR will deploy your application to fly.io for the first time! All subsequent PRs will not only deploy the latest changes to fly.io, but it will also update your infrastructure through Terraform Cloud. But we're not done yet - we still need to secure access to our DB!

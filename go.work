@@ -1,0 +1,7 @@
+go 1.20
+
+use (
+    ./apps/db-updater
+    ./apps/feeder-api
+    ./apps/post-api
+)

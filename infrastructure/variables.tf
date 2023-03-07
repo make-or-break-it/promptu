@@ -28,3 +28,9 @@ in Terraform.
     EOF
     default = "fake-password"
 }
+
+variable "promptu_api_cidr_range" {
+  type = string
+  description = "The CIDR range for the Promptu API application to be whitelisted by MongoDB Atlas"
+  default = "0.0.0.0/0"
+}

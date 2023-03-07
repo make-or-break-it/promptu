@@ -1,4 +1,4 @@
-app = "promptu-api-mir-demo"
+app = "promptu-api-mir"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []

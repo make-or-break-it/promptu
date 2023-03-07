@@ -1,6 +1,6 @@
 # Promptu
 
-Promptu is an anonymous social media that allows people to post answers to daily questions once at a given time.
+Promptu Make IT is an anonymous social media that allows people to post answers to daily questions once at a given time.
 
 ## Repo Structure
 

@@ -3,6 +3,7 @@ name: deploy-kafka
 on:
   push:
     paths:
+      - apps/zookeeper/**
       - apps/kafka/**
       - .github/**
     branches:
@@ -10,8 +11,16 @@ on:
       - eds/main
 
 jobs:
+  deploy-zookeeper:
+    name: Deploy Zookeeper
+    uses: ./.github/workflows/reusable-deploy.yaml
+    with:
+      component: apps/zookeeper
+    secrets:
+      fly-api-token: ${{ secrets.FLY_API_TOKEN }}
   deploy-kafka:
     name: Deploy Kafka
+    needs: deploy-zookeeper
     uses: ./.github/workflows/reusable-deploy.yaml
     with:
       component: apps/kafka

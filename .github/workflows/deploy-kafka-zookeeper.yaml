@@ -1,4 +1,4 @@
-name: deploy-kafka
+name: deploy-kafka-zookeeper
 
 on:
   push:

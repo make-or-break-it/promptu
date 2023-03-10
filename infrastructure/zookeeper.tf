@@ -1,7 +1,7 @@
 resource "fly_volume" "zookeeper" {
   name   = "zookeeper_data"
   app    = fly_app.promptu-zookeeper.name
-  size   = 1
+  size   = 2
   region = "lhr"
 }
 
